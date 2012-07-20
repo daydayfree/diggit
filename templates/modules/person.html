@@ -1,0 +1,38 @@
+<div class="{% if odd %}person odd{% else %}person{% end %}">
+  <a class="PersonImage ImgLink" href="/user/{{ user["_id"] }}">
+	<img alt="{{ user["name"] }}" src="{{ handler.get_photo_url(user, "large") }}" />
+  </a>
+  <div class="PersonFollow">
+	{% if current_user and current_user["_id"] != user["_id"] %}
+	{% if not user["ifollow"] %}
+	<a class="Button13 Button WhiteButton" href="javascript:void(0)" onclick="do_follow({{ user["_id"] }}, this)">
+	  <strong>Follow</strong><span></span>
+	</a>
+	{% else %}
+	<a class="Button13 Button WhiteButton disabled" href="javascript:void(0)" 
+	   onclick="do_follow({{ user["_id"] }}">
+	  <strong>Unfollow</strong><span></span>
+	</a>
+	{% end %}
+	{% elif not current_user %}
+	<a class="Button13 Button WhiteButton" href="{{ "/login?next=%s" % url_escape(request.uri) }}">
+	  <strong>Follow</strong><span></span>
+	</a>
+	{% end %}
+  </div>
+  <div class="PersonInfo">
+    <h4><a href="/user/{{ user["_id"] }}">{{ user["name"] }}</a></h4>
+    <div class="stats">
+      <a href="/user/{{ user["_id"] }}">{{ user["entries"] }} images</a> ·
+      <a href="/user/{{ user["_id"] }}?filter=likes">{{ user["likes"] }} likes</a> ·
+      <a href="/user/{{ user["_id"] }}/followers">{{ user["followers"] }} followers</a> ·
+      <a href="/user/{{ user["_id"] }}/friends">{{ user["friends"] }} funs</a>
+    </div>
+    <div class="icons">
+    </div>
+  </div>
+  <div class="PersonPins" id="UserTopEntries{{ user["_id"] }}"></div>
+</div>
+<script type="text/javascript">
+  fetchUserTops({{ user["_id"] }}, 'UserTopEntries{{ user["_id"] }}');
+</script>

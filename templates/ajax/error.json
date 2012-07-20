@@ -1,0 +1,6 @@
+{"rsp":
+	{
+		"stat":"fail",
+		"err":{"code":"{{ code or 404 }}","message":"{{message or "Not Found"}}"}
+	}
+}

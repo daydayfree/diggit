@@ -1,0 +1,85 @@
+{% extends "../base.html" %}
+
+{% block head %}
+<script type="text/javascript" src="{{ static_url("javascript/jquery.jcrop.min.js") }}"></script>
+<link rel="stylesheet" href="{{ static_url("styles/jquery.jcrop.css") }}" type="text/css"/>
+<script type="text/javascript">
+  $(function() {
+  $('#target').Jcrop({
+  onSelect:    showPreview,
+  onChange:    showPreview,
+  onRelease:   hidePreview,
+  bgColor:     'black',
+  bgOpacity:   .4,
+  addClass: 'jcrop-dark',
+  setSelect:   [ 80, 80, 0, 0 ],
+  aspectRatio: 1
+  });
+  
+  var $preview = $('#preview');
+  source_height = $("#target").height();
+  source_width = $("#target").width();
+
+  var r = 1;
+  if(source_width > 240) {
+  $("#target").width(240);
+  r = source_width / 240;
+  }
+
+  function showPreview(coords) {
+  coords.w = Math.round(coords.w * r);
+  coords.h = Math.round(coords.h * r);
+  coords.x = Math.round(coords.x * r);
+  coords.y = Math.round(coords.y * r);
+  $('#coords').val(coords.x + "|" + coords.y + "|" + coords.w + "|" + coords.h);
+  var rx = 80 / coords.w;
+  var ry = 80 / coords.h;
+
+  $preview.css({
+  width: Math.round(rx * source_width) + 'px',
+  height: Math.round(ry * source_height) + 'px',
+  marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+  marginTop: '-' + Math.round(ry * coords.y) + 'px'
+  }).show();
+  }
+
+  function hidePreview() {
+  $preview.stop().fadeOut('fast');
+  }
+  });
+</script>
+<style type="text/css">
+  #thumbnail {
+  width:80px;height:80px;overflow:hidden;
+  }
+</style>
+{% end %}
+
+{% block canvas %}
+<div id="login_logo"></div>
+{% if error %}
+<p style="text-align: center;" class="error">{{ handler.error_message[str(error)] }}</p>
+{% end %}
+<form action="/settings/crop" enctype="multipart/form-data" method="post" class="Form StaticForm" id="profileEdit">
+  <h3>裁剪头像</h3>
+  <ul>
+	<li>
+	  <label for="thumbnail">缩略图</label>
+	  <div class="Right">
+		<div id="thumbnail"><img id="preview" alt="缩略图" src="{{ static_url("icons_tmp/%s" % file_path) }}"/></div>
+	  </div>
+	</li>
+	<li>
+	  <label for="target">裁剪图片</label>
+	  <div class="Right">
+		<img id="target" alt="裁剪图片" src="{{ static_url("icons_tmp/%s" % file_path) }}"/>
+	  </div>
+	</li>
+  </ul>
+  <div class="Submit">
+    <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#"><strong>裁剪</strong><span></span></a>
+  </div>
+  <input type="hidden" id="coords" name="coords"/>
+  <input type="hidden" id="file_path" name="file_path" value="{{ file_path }}"/>
+</form>
+{% end %}

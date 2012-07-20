@@ -1,0 +1,4 @@
+{
+"rsp" : {"stat" : "ok", "message": "success"},
+"fav" : {"fav_id": {{ fav["_id"] }}, "user_id": {{ fav["user_id"] }}, "image_id": {{ fav["image_id"] }} }  
+} 

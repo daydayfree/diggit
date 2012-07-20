@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+
+{% block body %}
+  <body id="CategoriesBarPage" class="extraScroll">
+	{{ modules.Header() }}
+	{{ modules.CategoriesBar() }}
+	<div id="wrapper" class="BoardLayout">
+	  {% block canvas %}{% end %}
+	</div>
+	<div class="clear"></div>
+	<div id="footer">
+	  <div class="HeaderContainer">
+		<p>&copy; 2012 daydayfree</p>
+	  </div>
+	</div>
+  </body>
+{% end %}

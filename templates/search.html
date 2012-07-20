@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript">
+$(document).ready(function() {
+  searchEntries('{{ q }}');
+  $(window).scroll(function() {
+    searchViewLoader('{{ q }}');
+  });
+});
+</script>
+{% end %}
+
+{% block canvas %}
+<div id="ContextBar">
+  <p>
+    <span class="greyselected"> &mdash;Results for <span class="hilight">{{ q }}</span></span>
+  </p>
+</div>
+<div id="ColumnContainer">
+  <div id="col0" class="col"></div>
+  <div id="col1" class="col"></div>
+  <div id="col2" class="col"></div>
+  <div id="col3" class="col mr0"></div>
+  <div class="clear"></div>
+</div>
+<div id="LoadingPins">
+  <img alt="loading..." src="{{ static_url("images/BouncingLoader.gif") }}"/>
+  <span>loading...</span>
+</div>
+<div id="pager" style="display: none;">
+  <a class='Button Button13 WhiteButton' href='/search?p={{ p+1 }}&q={{ q }}'><strong> More... </strong><span></span></a>
+</div>
+<input id="p" type="hidden" value="{{ p }}">
+{% end %}

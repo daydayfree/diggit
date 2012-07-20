@@ -1,0 +1,11 @@
+<div class="comment" id="item_comments_{{ comment["_id"] }}">
+  {% if current_user and current_user["_id"] == comment["user_id"] %}
+  <a href="javascript:cmtdel({{ comment["_id"] }}, {{ comment["entry_id"] }})" title="Remove Comment" class="DeleteComment floatRight tipsyHover">X</a>
+  {% end %}
+  <a class="CommenterImage" href="/user/{{ comment["user_id"] }}">
+	<img src="{{ handler.get_photo_url(comment["user"]) }}"/>
+  </a>
+  <p class="CommenterMeta">
+	<a class="CommenterName" href="/user/{{ comment["user_id"] }}">{{ comment["user"]["name"] }}</a><br>{{ comment["content"] }}
+  </p>
+</div>

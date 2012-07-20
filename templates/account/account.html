@@ -1,0 +1,14 @@
+{% extends "../base.html" %}
+
+{% block sidebar %}
+{{ modules.UserItem(current_user, followed=None) }}
+<div class="operbox">
+  <ul>
+	<li><a href="/settings" class="i_user">帐号设置</a></li>
+	<li><a href="/settings/pwd" class="i_set">更改密码</a></li>
+	<li><a href="/settings/icon" class="i_user">修改头像</a></li>
+	<li><a href="/upload" class="i_user">上传图片</a></li>
+  </ul>
+  <div class="clear"></div>
+</div>
+{% end %}

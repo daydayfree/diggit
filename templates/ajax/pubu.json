@@ -1,0 +1,6 @@
+{
+  "code": {{ result['code'] }}, 
+  "msg": "{{ result['msg'] }}", 
+  "end": {{ result["end"] }},
+  "html": ["{{ "\",\"".join(result["html"]) }}"]
+}

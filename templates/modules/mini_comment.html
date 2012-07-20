@@ -1,0 +1,6 @@
+<div id="c{{ comment["_id"] }}" class="comment convo clearfix">
+  <a class="ImgLink" href="/user/{{ comment["user"]["_id"] }}">
+    <img alt="{{ comment["user"]["name"] }}" src="{{ handler.get_photo_url(comment["user"]) }}"/>
+  </a>
+  <p><a href="/user/{{ comment["user"]["_id"] }}">{{ comment["user"]["name"] }}</a> {{ comment["content"] }}</p>
+</div>

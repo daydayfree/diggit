@@ -1,0 +1,34 @@
+{% extends "base_profile.html" %}
+
+{% block head %}
+<script type="text/javascript">
+$(document).ready(function() {
+  fetchEntries('{{ user["_id"] }}', '{{ filter }}');
+  $(window).scroll(function() {
+    viewLoader('{{ user["_id"] }}', '{{ filter }}');
+  });
+});
+</script>
+{% end %}
+
+{% block canvas %}
+<div id="wrapper" class="Layout">
+  <div id="ColumnContainer">
+	<div id="col0" class="col"></div>
+	<div id="col1" class="col"></div>
+	<div id="col2" class="col"></div>
+	<div id="col3" class="col mr0"></div>
+	<div class="clear"></div>
+  </div>
+  <div id="LoadingPins">
+	<img alt="Pin Loader Image" src="{{ static_url("images/BouncingLoader.gif") }}"/>
+	<span>loading...</span>
+  </div>
+  <div id="pager" style="display: none;">
+	<a class='Button Button13 WhiteButton' href='{{ "/user/%s?p=%s" % (user["_id"], p+1) if filter != "likes" else "/user/%s?filter=%s&p=%s" % (user["_id"], filter, p+1) }}'>
+	  <strong> More... </strong><span></span>
+	</a>
+  </div>
+  <input id="p" type="hidden" value="{{ p }}">
+</div>
+{% end %}

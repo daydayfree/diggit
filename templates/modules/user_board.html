@@ -1,0 +1,57 @@
+<div class="pin pinBoard">
+  <div class="board">
+    <div class="holder">
+	  {% if "top_entries" in user and user["top_entries"] %}
+      <span class="cover">
+		<a href="/user/{{ user["_id"] }}">
+          <img alt="Uploaded" onload="this.style.opacity=1" style="opacity: 1; width: 225px;" src="{{ static_url("upload/%s" % user["top_entries"][0]["middle"]) }}"/>
+		</a>
+      </span>
+	  <span class="thumbs">
+		{% for p in user["top_entries"] %}
+        <a href="/item/{{ p["_id"] }}">
+		  <img alt="Thumbnail" src="{{ static_url("upload/%s" % p["thumb"]) }}"/>
+		</a>
+		{% end %}
+      </span>
+	  {% end %}
+    </div>
+    <div class="followBoard">
+	  {% if current_user and current_user["_id"] != user["_id"] %}
+	  {% if not followed %}
+	  <a class="Button13 Button WhiteButton followbutton InlineButton" href="javascript:void(0)" onclick="do_follow({{ user["_id"] }}, this)">
+        <strong>Follow</strong><span></span>
+	  </a>
+	  {% else %}
+	  <a class="Button13 Button WhiteButton disabled clickable unfollowbutton InlineButton" href="javascript:void(0)" 
+		 onclick="do_follow({{ user["_id"] }}">
+        <strong>Unfollow</strong><span></span>
+	  </a>
+	  {% end %}
+	  {% elif not current_user %}
+	  <a class="Button13 Button WhiteButton followbutton InlineButton" href="{{ "/login?next=%s" % url_escape(request.uri) }}">
+        <strong>Follow</strong><span></span>
+	  </a>
+	  {% end %}
+    </div>
+  </div>
+</div>
+
+<div class="pin pinBoard">
+  <div class="board">
+	<div class="holder">
+	  <span class="thumbs" id="items_similar">
+		{% for pi in user["primary"]["pre"][::-1] %}
+		<a href="/item/{{ pi["_id"] }}">
+		  <img id="item_similar_{{ pi["_id"] }}" alt="Thumbnail" src="{{ static_url("upload/%s" % pi["thumb"]) }}"/>
+		</a>
+		{% end %}
+		{% for p2 in user["primary"]["next"][::-1] %}
+		<a href="/item/{{ p2["_id"] }}">
+		  <img id="item_similar_{{ p2["_id"] }}" alt="Thumbnail" src="{{ static_url("upload/%s" % p2["thumb"]) }}"/>
+		</a>
+		{% end %}
+	  </span>
+	</div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript">
+$(document).ready(function() {
+  fetchCategoryEntries($("#category").val());
+  $(window).scroll(function() {
+    categoryViewLoader($("#category").val());
+  });
+});
+</script>
+{% end %}
+
+{% block canvas %}
+<div id="ColumnContainer">
+  <div id="col0" class="col"></div>
+  <div id="col1" class="col"></div>
+  <div id="col2" class="col"></div>
+  <div id="col3" class="col mr0"></div>
+  <div class="clear"></div>
+</div>
+<div id="LoadingPins">
+  <img alt="loading..." src="{{ static_url("images/BouncingLoader.gif") }}"/>
+  <span>loading...</span>
+</div>
+<div id="pager" style="display: none;">
+  <a class='Button Button13 WhiteButton' href='/all?p={{ p+1 }}&category={{ category }}'><strong> More... </strong><span></span></a>
+</div>
+<input id="p" type="hidden" value="{{ p }}">
+<input id="category" type="hidden" value="{{ category }}"/>
+{% end %}

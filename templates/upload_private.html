@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link href="{{ static_url("styles/swfupload.css") }}" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="{{ static_url("javascript/swfupload.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("javascript/swfupload.queue.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("javascript/swfupload.progress.js") }}"></script>
+<script type="text/javascript" src="{{ static_url("javascript/swfupload.handlers.js") }}"></script>
+<script type="text/javascript">
+  var swfu;
+  window.onload = function() {
+  var uid = "{{ current_user["_id"]}}";
+  var post_params = {
+  title: "", link:"", description:"", uid: uid, categories: ""
+  };
+
+  var settings = {
+  flash_url : "{{ static_url("swfupload.swf") }}",
+  post_params : post_params,
+  upload_url: "{{ handler.settings["upload_url"] }}",
+  file_size_limit : "10 MB",
+  file_types : "*.jpg;*.png;*.jpeg",
+  file_types_description : "Image Files",
+  file_upload_limit : 100,
+  file_queue_limit : 0,
+  custom_settings : {
+  progressTarget : "fsUploadProgress",
+  cancelButtonId : "btnCancel"
+  },
+  debug: false,
+
+  button_width: "80",
+  button_height: "30",
+  button_placeholder_id: "spanButtonPlaceHolder",
+  button_text: "<span class='upload_button'>选择文件</span>",
+  button_text_style: ".upload_button { font-size: 13.5; }",
+  button_text_left_padding: 12,
+  button_text_top_padding: 5,
+  
+  file_queued_handler : fileQueued,
+  file_queue_error_handler : fileQueueError,
+  file_dialog_complete_handler : fileDialogComplete,
+  upload_start_handler : uploadStart,
+  upload_progress_handler : uploadProgress,
+  upload_error_handler : uploadError,
+  upload_success_handler : uploadSuccess,
+  upload_complete_handler : uploadComplete,
+  queue_complete_handler : queueComplete
+  };
+
+  swfu = new SWFUpload(settings);
+  };
+
+  function change_params(obj) {
+    if(obj.name != "category") {
+      swfu.addPostParam(obj.name, obj.value);
+    } else {
+      var cates = $(".Form input:checkbox");
+      var categories = new Array();
+      for(var i=0; i<cates.length; i++) {
+        if(cates[i].checked) categories.push(cates[i].value) ;
+      }
+      swfu.addPostParam('categories', categories.join(','));
+    }
+  }
+</script>
+{% end %}
+
+{% block canvas %}
+<div>
+  <div id="login_logo"></div>
+  <form action="" method="post" enctype="multipart/form-data" class="Form StaticForm" id="profileEdit">
+	<h3>上传图片</h3>
+	<ul>
+	  <li>
+		<label for="id_title">标题</label>
+		<div class="Right">
+		  <input id="id_title" type="text" name="title" onchange="change_params(this)"/>
+		</div>
+	  </li>
+	  <li>
+		<label for="id_tags">标签</label>
+		<div class="Right">
+		  <input id="id_tags" type="text" name="tags" onchange="change_params(this)"/>
+		  <span class="help_text">使用，逗号隔开</span>
+		</div>
+	  </li>
+	  <li>
+		<label for="id_link">链接</label>
+		<div class="Right">
+		  <input id="id_link" type="text" name="link" onchange="change_params(this)"/>
+		</div>
+	  </li>
+	  <li>
+		<label for="id_desp">描述</label>
+		<div class="Right">
+		  <textarea id="id_desp" rows="3" name="description" onchange="change_params(this)"></textarea>
+		</div>
+	  </li>
+	  <li>
+		<label>分类</label>
+		<div class="Right">
+		{% for cate in categories %}
+		<input name="category" type="checkbox" value="{{ cate["_id"] }}" onchange="change_params(this)"/>{{ cate["name"] }}
+		{% if cate["_id"] == 14 %}<br/>{% end %}
+		{% end %}
+		</div>
+	  </li>
+	</ul>
+	<div class="Submit">
+	  <div class="fieldset flash" id="fsUploadProgress"></div>
+	  <div class="clear"></div>
+	  <div id="divStatus"></div>
+	  <div>
+		<span id="spanButtonPlaceHolder"></span>
+		<input id="btnCancel" type="button" value="取消" onclick="swfu.cancelQueue();" style="display: none"/>
+	  </div>
+	</div>
+	{{ xsrf_form_html() }}
+  </form>
+</div>
+{% end %}

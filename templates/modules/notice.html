@@ -1,0 +1,45 @@
+<div class="feed">
+  <a href="/user/{{ notice["user"]["_id"] }}" target="_blank">
+	<img src="{{ handler.get_photo_url(notice["user"]) }}"></a>
+  <div class="info">
+	{% if notice["notice_type"] == "comment" %}
+	<p>
+	  <a href="/user/{{ notice["user"]["_id"] }}" target="_blank">{{ notice["user"]["name"] }}</a> 
+	  {{ notice["published"] }} 评论了您的图片
+	  <a href="/item/{{ notice["entry"]["_id"] }}" target="_blank">{{ notice["entry"]["title"] }}</a>
+	</p>
+	<div class="cont">
+	  <a href="/item/{{ notice["entry"]["_id"] }}" target="_blank">
+		<img src="{{ static_url("upload/%s" % notice["entry"]["small_image"]) }}">
+	  </a>
+	  <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ notice["content"] }}</span>
+	  <div class="clear"></div>
+	</div>
+	{% elif notice["notice_type"] == "fav" %}
+	<p>
+	  <a href="/user/{{ notice["user"]["_id"] }}" target="_blank">{{ notice["user"]["name"] }}</a> 
+	  {{ notice["published"] }} 喜欢了您的图片
+	  <a href="/item/{{ notice["entry"]["_id"] }}" target="_blank">{{ notice["entry"]["title"] }}</a>
+	</p>
+	<div class="cont">
+	  <a href="/item/{{ notice["entry"]["_id"] }}" target="_blank">
+		<img src="{{ static_url("upload/%s" % notice["entry"]["small_image"]) }}">
+	  </a>
+	  <div class="clear"></div>
+	</div>
+	{% elif notice["notice_type"] == "follow" %}
+	<p>
+	  <a href="/user/{{ notice["user"]["_id"] }}" target="_blank">{{ notice["user"]["name"] }}</a> 
+	  {{ notice["published"] }} 关注了您
+	</p>
+	<div class="cont">
+	  <a href="/user/{{ notice["user"]["_id"] }}" target="_blank">
+		<img src="{{ static_url("icons/%s" % notice["user"]["middle_photo_url"]) }}" width="102px"/>
+	  </a>
+	  <div class="clear"></div>
+	</div>
+	{% end %}
+	<div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

@@ -1,0 +1,50 @@
+<div id="CategoriesBar">
+  <ul class="LiquidContainer HeaderContainer" style="width: 933px;">
+	<li class="submenu">
+	  {% set category = handler.get_argument("category", None) %}
+	  {% if category and category.isdigit() %}
+	  <a class="nav selected" href="/all">Categories<span></span></a>&nbsp;·
+	  {% else %}
+	  <a class="nav" href="/">All categories<span></span></a>&nbsp;·
+	  {% end %}
+	  <ul id="CategoriesDropdown">
+        <li>
+		  {% set categories = handler.get_all_categories() %}
+          <span class="SubmenuColumn">
+			{% for cate in categories[:15] %}
+			{% if category and category.isdigit() and int(category) == cate["_id"] %}
+            <a class="selected" href="/all?category={{ cate["_id"] }}">{{ cate["name"] }}</a>
+			{% else %}
+			<a href="/all?category={{ cate["_id"] }}">{{ cate["name"] }}</a>
+			{% end %}
+			{% end %}
+          </span>
+          <span class="SubmenuColumn">
+            {% for cate in categories[15:] %}
+            {% if category and category.isdigit() and int(category) == cate["_id"] %}
+            <a class="selected" href="/all?category={{ cate["_id"] }}">{{ cate["name"] }}</a>
+			{% else %}
+			<a href="/all?category={{ cate["_id"] }}">{{ cate["name"] }}</a>
+			{% end %}
+			{% end %}
+          </span>
+        </li>
+      </ul>
+	</li>
+	{% if current_user %}
+	<li><a class="nav" href="/user/{{ current_user["_id"] }}?filter=likes">Your likes</a>&nbsp;·</li>
+	<li><a class="nav" href="/user/{{ current_user["_id"] }}">Your Images</a>&nbsp;·</li>
+	{% end %}
+	{% set tags = handler.get_tags(0, 10) %}
+	{% if tags and len(tags) %}
+	<li class="submenu">
+	  <a class="nav" href="#">Hot tags<span></span></a>
+	  <ul>
+		{% for tag in tags %}
+		<li><a href="/search?q={{ tag["_id"] }}">{{ tag["_id"] }}</a></li>
+		{% end %}
+	  </ul>
+	</li>
+	{% end%}
+  </ul>
+</div>

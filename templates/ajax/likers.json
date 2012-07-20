@@ -1,0 +1,13 @@
+{
+  "code": {{ result['code'] }}, 
+  "msg": "{{ result['msg'] }}", 
+  "likers": [
+    {% for i in range(0, len(result["likers"])) %}
+	{
+	  "id": "{{ result["likers"][i]["_id"] }}",
+	  "name": "{{ result["likers"][i]["name"] }}",
+	  "photo_url": "{{ handler.get_photo_url(result["likers"][i]) }}"
+	}{% if i != len(result["likers"]) - 1 %},{% end %}
+    {% end %}
+  ]
+}

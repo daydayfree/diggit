@@ -1,0 +1,16 @@
+{
+  "code": {{ result['code'] }}, 
+  "msg": "{{ result['msg'] }}", 
+  "me_follow": {{ result["me_follow"] }},
+  "tops": [
+    {% for i in range(0, len(result["tops"])) %}
+	{
+	  "id": "{{ result["tops"][i]["_id"] }}",
+	  "title": "{{ result["tops"][i]["title"] }}",
+	  "thumb": "{{ static_url("upload/%s" % result["tops"][i]["thumb"]) }}",
+	  "cmtscount": 0,
+	  "favscount": 0
+	}{% if i != len(result["tops"]) - 1 %},{% end %}
+    {% end %}
+  ]
+}

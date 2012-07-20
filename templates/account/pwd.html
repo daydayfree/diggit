@@ -1,0 +1,29 @@
+{% extends "../base.html" %}
+
+{% block canvas %}
+<div id="login_logo"></div>
+{% if error %}
+<p style="text-align: center;" class="error">{{ handler.error_message[str(error)] }}</p>
+{% end %}
+<form action="/settings/pwd" method="post" class="Form StaticForm" id="profileEdit">
+  <h3>修改密码</h3>
+  <ul>
+	<li>
+	  <label for="user_pwd">当前密码</label>
+	  <div class="Right">
+		<input type="password" id="user_pwd" name="pwd"/>
+	  </div>
+	</li>
+	<li>
+	  <label for="user_newpwd">新密码</label>
+	  <div class="Right">
+		<input type="password" id="user_newpwd" name="new_pwd"/>
+	  </div>
+	</li>
+	{{ xsrf_form_html() }}
+  </ul>
+  <div class="Submit">
+    <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#"><strong>修改</strong><span></span></a>
+  </div>
+</form>
+{% end %}

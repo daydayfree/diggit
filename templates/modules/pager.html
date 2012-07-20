@@ -1,0 +1,25 @@
+<div id="pagination">
+  <div class="pages">
+	{% if pager.show_previous %}
+	<a href="{{ "%s?p=%s" % (pager.url, pager.index - 1) }}" id="page-prev">«</a>
+	<a href="{{ pager.url }}">1</a>
+	<span class="dot">...</span>
+	{% end %}
+	{% for i in range(pager.start_index, pager.end_index + 1) %}
+	{% if i == pager.index %}
+	<span class="current">{{ i }}</span>
+	{% else %}
+	<a href="{{ "%s?p=%s" % (pager.url, i) }}">{{ i }}</a>
+	{% end %}
+	{% end %}
+	{% if pager.show_next %}
+	<span class="dot">...</span>
+	<a href="{{ "%s?p=%s" % (pager.url, pager.pages) }}">{{ pager.pages }}</a>
+	<a href="{{ "%s?p=%s" % (pager.url, pager.index + 1) }}" id="page-next">»</a>
+	{% end %}
+	<form action="{{ pager.url }}" method="get">
+	  <input type="submit" value="GO" id="page_submit">
+	  <input type="text" name="p" value="1" id="page">
+	</form>
+  </div>
+</div>

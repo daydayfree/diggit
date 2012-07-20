@@ -1,0 +1,60 @@
+{% extends "account.html" %}
+
+{% block canvas %}
+<div id="login_logo"></div>
+{% if error %}
+{% if error == 130 %}
+<p style="text-align: center;" class="error">信息更新成功。</p>
+{% else %}
+<p style="text-align: center;" class="error">信息更新出错，请稍后再试。</p>
+{% end %}
+{% end %}
+<form action="/settings" method="post" class="Form StaticForm" id="profileEdit">
+  <h3>用户信息设置</h3>
+  <ul>
+	<li>
+	  <label for="user_name">昵称</label>
+	  <div class="Right">
+		<input type="text" id="user_name" name="name" value="{{ current_user["name"] }}"/>
+	  </div>
+	</li>	  
+	<li>
+	  <label for="user_name">用户名</label>
+	  <div class="Right">
+	  <input type="text" id="user_name" name="username" value="{% if "username" in current_user %}{{ current_user["username"] }}{% end %}"/>
+	  </div>
+	</li>
+	<li>
+	  <label for="user_email">Email</label>
+	  <div class="Right">
+	  <input type="text" disabled="disabled" id="user_email" name="email" value="{{ current_user["email"] }}">
+	  <span class="help_text">不能修改</span>
+	  </div>
+	</li>
+	<li>
+	  <label for="user_city">城市</label>
+	  <div class="Right">
+	  <input type="text" id="user_city" name="city" value="{% if "city" in current_user %}{{ current_user["city"] }}{% end %}"> 
+	  </div>
+	</li>
+	<li>
+	  <label for="user_link">博客</label>
+	  <div class="Right">
+	  <input type="text" id="user_link" name="link" value="{% if "link" in current_user %}{{ current_user["link"] }}{% end %}"> 
+	  </div>
+	</li>
+	<li>
+	  <label for="user_bio">个人签名</label>
+	  <div class="Right">
+	  <textarea id="user_bio" name="bio">
+		{% if "bio" in current_user %}{{ current_user["bio"] }}{% end %}
+	  </textarea> 
+	  </div>
+	</li>
+	{{ xsrf_form_html() }}
+  </ul>
+  <div class="Submit">
+    <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#"><strong>更新</strong><span></span></a>
+  </div>
+</form>
+{% end %}

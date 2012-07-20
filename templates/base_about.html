@@ -1,0 +1,46 @@
+{% extends "master.html" %}
+
+{% block body %}
+<body>
+{{ modules.Header() }}
+<div id="AboutContainer">
+  <div id="AboutContent">
+    <div id="AboutLeft">
+      <ul>
+        <li>
+          <a class="selected loaded" href="/about">
+            <span>About us</span>
+            <span class="pointer normal"></span>
+            <span class="pointer hover"></span>
+          </a>
+        </li>
+        <li>
+          <a href="/about/help">
+            <span>Help</span>
+            <span class="pointer normal"></span>
+            <span class="pointer hover"></span>
+          </a>
+        </li>
+        <li>
+          <a href="/about/term">
+            <span>Term</span>
+            <span class="pointer normal"></span>
+            <span class="pointer hover"></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div id="AboutRight">
+	  {% block canvas %}{% end %}
+	</div>
+  </div>
+</div>
+<div class="clear"></div>
+<div id="footer">
+  <div class="HeaderContainer">
+	<p>&copy; 2012 daydayfree</p>
+  </div>
+</div>
+</body>
+{% end %}

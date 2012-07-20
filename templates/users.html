@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+{% if current_user %}
+{{ modules.UserItem(current_user, followed=None) }}
+{% end %}
+{% end %}
+
+{% block canvas %}
+<div id="content">
+  <div class="pageheader">
+	<h2>Users</h2>
+  </div>
+  <div class="clear"></div>
+  <div class="catalog">
+	<div id="users">
+	{% if users and users.count() %}
+	{% for user in users %}
+	<div class="user">
+	  <p>
+		<a href="/user/{{ user["_id"] }}">
+		  <img src="{{ handler.get_photo_url(user) }}" id="user_d_411231" 
+			   style="position: relative;" class="ui-draggable">
+	  </a>
+	  </p>
+	  <p class="who">
+		<span>
+		  <a href="/user/{{ user["_id"] }}">{{ user["name"] }}</a> 
+		</span> 
+	  </p>
+	  <p class="msg">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ user["bio"] }}</p>
+	</div>
+	{% end %}
+	{% else %}
+	<div class="notice">
+	  <p>No users</p>
+	</div>
+	{% end %}
+	</div>
+  </div>
+  {% if pager %}
+  {{ modules.Pager(pager) }}
+  {% end %}
+</div>
+{% end %}

@@ -1,0 +1,46 @@
+<div id="Header">
+  <div class="LiquidContainer HeaderContainer">
+	<a href="/" id="Pinterest">
+	  <img src="{{ static_url("images/LogoRed.png") }}" alt="Diggit" height="26"/>
+	</a>
+	<ul id="Navigation">
+	  {% if current_user %}
+      <li><a class="nav" href="/upload">Post<span class="PlusIcon"></span></a></li>
+	  <li>
+		<a class="nav" href="/about">Aboutus<span></span></a>
+		<ul>
+          <li><a href="/about/help">Help</a></li>
+          <li><a href="/about/term">Term</a></li>
+		</ul>
+	  </li>
+      <li id="UserNav">
+        <a class="nav" href="/user/{{ current_user["_id"] }}">
+		  <img alt="{{ current_user["name"] }}" src="{{ handler.get_photo_url(current_user) }}"/>{{ current_user["name"] }}<span></span>
+		</a>
+        <ul>
+          <li><a href="/user/{{ current_user["_id"] }}">Home</a></li>
+		  <li><a href="/user/{{ current_user["_id"] }}?filter=likes">Likes</a></li>
+		  <li><a href="/user/{{ current_user["_id"] }}/friends">Following</a></li>
+          <li class="beforeDivider"><a href="/user/{{ current_user["_id"] }}/followers">Followed</a></li>
+          <li class="divider"><a href="/settings">Profile</a></li>
+          <li><a href="/settings/pwd">Reset password</a></li>
+		  <li class="beforeDivider"><a href="/settings/icon">Modify photo</a></li>
+          <li class="divider"><a href="/logout">Logout</a></li>
+        </ul>
+      </li>
+	  {% else %}
+	  <li><a href="{{ "/login?next=%s" % url_escape(request.uri) }}" class="nav">Login</a></li>
+	  <li><a href="{{ "/join?next=%s" % url_escape(request.uri) }}" class="nav">Join</a></li>
+	  {% end %}
+	</ul>
+	<div id="Search">
+      <form action="/search" method="get" class="text" id="searchForm">
+		<input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" onfocus="if (this.value == 'Search') this.value='';"
+			   class="ui-autocomplete-input" id="query" name="q" size="27" value="Search" type="text"/>
+		<a id="query_button" href="#" class="lg" onclick="if($('#query').val() != '' && $('#query').val() != 'Search') $('#searchForm').submit()">
+		  <img src="{{ static_url("images/search.gif") }}" alt="Search"/>
+		</a>
+      </form>
+	</div>
+  </div>
+</div>

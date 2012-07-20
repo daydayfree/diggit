@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block sidebar %}
+{{ modules.UserItem(current_user, followed=None) }}
+<div class="box userinfo">Your notices</div>
+<div class="operbox">
+  <ul>
+	<li>
+	  <a id="ajax_ev" class="i_set" href="/tip/1/do_cmtx">Close</a>
+	</li>
+	<li>
+	  <a href="/tips" class="i_cmt">Check all notices</a>
+	</li>
+	<div class="clear"></div>
+  </ul>
+  <div class="clear"></div>
+</div>
+{% end %}
+
+{% block canvas %}
+<div id="content">
+  <div class="pageheader">
+	<h2>Feeds</h2>
+  </div>
+  <div class="clear"></div>
+  <div class="catalog">
+	{% if notices and len(notices) %}
+	{% for notice in notices %}
+	{{ modules.Notice(notice) }}
+	{% end %}
+	{% else %}
+	<div class="notice">
+	  <p>No notice</p>
+	</div>
+	{% end %}
+  </div>
+</div>
+{% end %}
