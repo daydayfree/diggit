@@ -18,7 +18,7 @@ Nginx
 可以在 Nginx 配置文件中设置。
 
 具体上传的文档可以参考[这里](http://www.grid.net.ru/nginx/upload.en.html)
-上面有 Demo，感兴趣的同学可以尝试一下。
+还有[这里](https://github.com/blueimp/jQuery-File-Upload/wiki/Uploading-to-nginx-using-the-nginx-upload-module)上面有 Demo，感兴趣的同学可以尝试一下。
 
 
 Mailto: [daydayfree@gmail.com](daydayfree@gmail.com)
