@@ -12,9 +12,10 @@ class Database(object):
         max_pool = MONGODB_SETTINGS['max_pool']
         self.connection = pymongo.Connection(host, port, max_pool)
         self.db = self.connection["blade"]
+        self.db.add_son_manipulator(NamespaceInjector())
         self.db.add_son_manipulator(AutoReference(self.db))
 
-    def insert(self, table, documents): 
+    def insert(self, table, documents):
         return self.db[table].insert(documents)
 
     def query(self, table, parameters, sort, offset, limit, fields=None):
