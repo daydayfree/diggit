@@ -21,30 +21,30 @@ from module import (
     HeaderModule, CategoriesBarModule
 )
 
-from handler.home import (
+from view.home import (
     IndexHandler, JoinHandler, LoginHandler, GoogleLoginHandler,
     WeiboLoginHandler, QQLoginHandler, RenrenLoginHandler,
     LogoutHandler, CategoryHandler
 )
-from handler.entry import (
+from view.entry import (
     UploadHandler, PrivateUploadHandler, ItemHandler,
     FavHandler, CommentHandler, DeleteCommentHandler
 )
-from handler.user import (
+from view.user import (
     UserHandler, FollowHandler, FollowerHandler, FriendHandler,
     UsersHandler
 )
-from handler.account import (
+from view.account import (
     SettingsHandler, PasswordHandler, IconHandler,
     CropIconHandler
 )
-from handler.feed import NoticeHandler
-from handler.ajax import (
+from view.feed import NoticeHandler
+from view.ajax import (
     AjaxHandler, AjaxRelationHandler, AjaxEntryLikerHandler, AjaxUserTopsHandler,
     AjaxCommentHandler
 )
-from handler.about import AboutHandler, HelpHandler, TeamHandler
-from handler.searcher import SearchHandler
+from view.about import AboutHandler, HelpHandler, TeamHandler
+from view.searcher import SearchHandler
 
 
 class Application(tornado.web.Application):
