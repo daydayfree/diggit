@@ -3,3 +3,6 @@ init-dev:
 
 web:
 	python -W ignore server.py
+
+test:
+	py.test tests/

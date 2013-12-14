@@ -1,23 +1,45 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
+from collections import OrderedDict
 from model import Model
 
-class Category(Model):
-    table = "categories"
 
-    def save(self):
-        cates = ('旅行', '艺术', '建筑', '人物', '摄影', '电影/音乐', '生活', 
-                 '汽车', 'DIY', '创意/设计', '萌宠', '美食', '家居', '手绘/插画',
-                 '美女', '儿童', '自然', '健康', '服饰/街拍', '婚礼', '体育',
-                 '科技', '海报', '产品', '3C数码', '趣味', '妆发', '手工/玩物',
-                 '男人', '动漫')
-        for cate in cates:
-            item = {'_id': self.get_id(), 'name': cate}
-            self.insert(item)
+_CATEGORIES = {
+    '1000': '旅行',
+    '1001': '艺术',
+    '1002': '建筑',
+    '1003': '人物',
+    '1004': '摄影',
+    '1005': '电影/音乐',
+    '1006': '生活',
+    '1007': '汽车',
+    '1008': 'DIY',
+    '1009': '创意/设计',
+    '1010': '萌宠',
+    '1011': '美食',
+    '1012': '家居',
+    '1013': '手绘/插画',
+    '1014': '美女',
+    '1015': '儿童',
+    '1016': '自然',
+    '1017': '健康',
+    '1018': '服饰/街拍',
+    '1019': '婚礼',
+    '1020': '体育',
+    '1021': '科技',
+    '1022': '海报',
+    '1023': '产品',
+    '1024': '3C数码',
+    '1025': '趣味',
+    '1026': '妆发',
+    '1027': '手工/玩物',
+    '1028': '男人',
+    '1029': '动漫'
+}
+
+
+class Category(Model):
 
     def get_all(self):
-        result = self.query(None, 0, 100)
-        for item in result:
-            item["_id"] = int(item["_id"])
-        return result
+        return [{'_id': cid, 'name': name}
+                for cid, name in _CATEGORIES.items()]

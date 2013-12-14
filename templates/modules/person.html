@@ -9,7 +9,7 @@
 	  <strong>Follow</strong><span></span>
 	</a>
 	{% else %}
-	<a class="Button13 Button WhiteButton disabled" href="javascript:void(0)" 
+	<a class="Button13 Button WhiteButton disabled" href="javascript:void(0)"
 	   onclick="do_follow({{ user["_id"] }}">
 	  <strong>Unfollow</strong><span></span>
 	</a>
@@ -23,10 +23,18 @@
   <div class="PersonInfo">
     <h4><a href="/user/{{ user["_id"] }}">{{ user["name"] }}</a></h4>
     <div class="stats">
-      <a href="/user/{{ user["_id"] }}">{{ user["entries"] }} images</a> ·
-      <a href="/user/{{ user["_id"] }}?filter=likes">{{ user["likes"] }} likes</a> ·
-      <a href="/user/{{ user["_id"] }}/followers">{{ user["followers"] }} followers</a> ·
-      <a href="/user/{{ user["_id"] }}/friends">{{ user["friends"] }} funs</a>
+      <a href="/user/{{ user["_id"] }}">
+        {{ user["entries"] }} images
+      </a> ·
+      <a href="/user/{{ user["_id"] }}?filter=likes">
+        {{ user["likes"] }} likes
+      </a> ·
+      <a href="/user/{{ user["_id"] }}/followers">
+        {{ user["followers"] }} followers
+      </a> ·
+      <a href="/user/{{ user["_id"] }}/friends">
+        {{ user["friends"] }} funs
+      </a>
     </div>
     <div class="icons">
     </div>

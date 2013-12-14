@@ -3,6 +3,7 @@
 import tornado.web
 from base import BaseHandler
 
+
 class AboutHandler(BaseHandler):
     def get(self):
         self.render("about.html")
@@ -15,4 +16,4 @@ class HelpHandler(BaseHandler):
 
 class TeamHandler(BaseHandler):
     def get(self):
-        self.render("term.html")
+        self.render("team.html")
