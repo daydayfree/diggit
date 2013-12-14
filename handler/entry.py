@@ -9,7 +9,9 @@ from util import upload_crop
 from model import Entry, Fav, Comment, Flag, Relation, User, Category
 from search import seg_txt_search
 
+
 class UploadHandler(BaseHandler):
+
     @property
     def entry_dal(self): return Entry()
 
@@ -35,11 +37,11 @@ class UploadHandler(BaseHandler):
         image_md5 = self.get_argument("Filedata.md5", None)
         image_size = self.get_argument("Filedata.size", None)
         categories = self.get_argument("categories", None)
-        
+
         if not user_id: return
         user_id = int(user_id)
         if not image_path: return
-        
+
         name, ext = os.path.splitext(image_name)
         response = upload_crop(image_path, ext)
         if not response["status"]: return
@@ -49,7 +51,7 @@ class UploadHandler(BaseHandler):
         middle_path = response["middle_path"].split("/upload/")[1]
         width = response["width"]
         height = response["height"]
-        
+
         entry = self.entry_dal.template()
         entry["user_id"] = user_id
         entry["user"] = self.entry_dal.dbref("users", user_id)
@@ -67,8 +69,8 @@ class UploadHandler(BaseHandler):
         entry["size"] = image_size
 
         if categories:
-            entry["categories"] = [int(item.strip()) 
-                                   for item in categories.split(",") 
+            entry["categories"] = [int(item.strip())
+                                   for item in categories.split(",")
                                    if item.strip()]
 
         if title:
@@ -93,7 +95,7 @@ class ItemHandler(BaseHandler):
 
     @property
     def fav_dal(self): return Fav()
-    
+
     @property
     def relation_dal(self): return Relation()
 
@@ -125,7 +127,7 @@ class ItemHandler(BaseHandler):
             _tmp = self.relation_dal.get_relation(
                 self.current_user["_id"], entry["user_id"])
             if _tmp: followed = True
-        
+
         comments = None
         total = self.entry_dal.get_comments_count(entry_id)
         if total > 0:
@@ -136,7 +138,7 @@ class ItemHandler(BaseHandler):
             if total > self._page_size:
                 pager = Pager(self._page_size, total, page_index, url)
 
-        self.render("item.html", entry=entry, comments=comments, 
+        self.render("item.html", entry=entry, comments=comments,
                     pager=pager, faved=faved, user=user,
                     followed=followed)
 
@@ -181,7 +183,7 @@ class FavHandler(BaseHandler):
             self.user_dal.update_likes_count(user_id, -1)
             self.entry_dal.update_likes_count(entry_id, -1)
             self.write("false")
-        
+
 
 """
 保存评论信息，更新图片评论数。
@@ -198,12 +200,12 @@ class CommentHandler(BaseHandler):
         user_id = self.current_user["_id"]
         entry_id = self.get_argument("iid", "")
         content = self.get_argument("content", "")
-        
+
         entry_id = int(entry_id)
         comment = {
             "_id": self.comment_dal.get_id(),
             "user_id": user_id,
-            "user": self.comment_dal.dbref("users", user_id), 
+            "user": self.comment_dal.dbref("users", user_id),
             "entry_id": entry_id,
             "entry": self.comment_dal.dbref("entries", entry_id),
             "content": content,

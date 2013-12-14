@@ -2,12 +2,10 @@
 
 import os.path
 import tornado.web
-import handler
-import module
 
 from tornado.options import define, options
 
-define('port', default=8888, help='run on the given port', type=int)
+define('port', default=9800, help='run on the given port', type=int)
 define('upload_url', '/upload/')
 
 define('weibo_consumer_key', default='')
@@ -17,57 +15,88 @@ define('qq_consumer_secret', default='')
 define('renren_key', default='')
 define('renren_secret', default='')
 
+from module import (
+    AccountModule, NoticeModule, EntryModule, UserBoardModule,
+    UserProfileModule, PersonModule, PagerModule, CommentModule,
+    HeaderModule, CategoriesBarModule
+)
+
+from handler.home import (
+    IndexHandler, JoinHandler, LoginHandler, GoogleLoginHandler,
+    WeiboLoginHandler, QQLoginHandler, RenrenLoginHandler,
+    LogoutHandler, CategoryHandler
+)
+from handler.entry import (
+    UploadHandler, PrivateUploadHandler, ItemHandler,
+    FavHandler, CommentHandler, DeleteCommentHandler
+)
+from handler.user import (
+    UserHandler, FollowHandler, FollowerHandler, FriendHandler,
+    UsersHandler
+)
+from handler.account import (
+    SettingsHandler, PasswordHandler, IconHandler,
+    CropIconHandler
+)
+from handler.feed import NoticeHandler
+from handler.ajax import (
+    AjaxHandler, AjaxRelationHandler, AjaxEntryLikerHandler, AjaxUserTopsHandler,
+    AjaxCommentHandler
+)
+from handler.about import AboutHandler, HelpHandler, TeamHandler
+from handler.searcher import SearchHandler
+
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r'/', handler.IndexHandler),
-            (r'/join', handler.JoinHandler),
-            (r'/login', handler.LoginHandler),
-            (r'/logout', handler.LogoutHandler),
-            (r'/open/google', handler.GoogleLoginHandler),
-            (r'/open/weibo', handler.WeiboLoginHandler),
-            (r'/open/qq', handler.QQLoginHandler),
-            (r'/open/renren', handler.RenrenLoginHandler),
-            (r'/logout', handler.LogoutHandler),
-            (r'/upload', handler.UploadHandler),
-            (r'/upload_private', handler.PrivateUploadHandler),
-            (r'/user/(\d+)', handler.UserHandler),
-            (r'/user/(\d+)/do_follow', handler.FollowHandler),
-            (r'/item/(\d+)', handler.ItemHandler),
-            (r'/item/(\d+)/do_fav', handler.FavHandler),
-            (r'/comment', handler.CommentHandler),
-            (r'/settings', handler.SettingsHandler),
-            (r'/settings/pwd', handler.PasswordHandler),
-            (r'/settings/icon', handler.IconHandler),
-            (r'/settings/crop', handler.CropIconHandler),
-            (r'/notice', handler.NoticeHandler),
-            (r'/user/(\d+)/followers', handler.FollowerHandler),
-            (r'/user/(\d+)/friends', handler.FriendHandler),
-            (r'/users', handler.UsersHandler),
-            (r'/cmtdel', handler.DeleteCommentHandler),
-            (r'/ajax/pubu', handler.AjaxHandler),
-            (r'/ajax/re', handler.AjaxRelationHandler),
-            (r'/ajax/likers', handler.AjaxEntryLikers),
-            (r'/ajax/tops', handler.AjaxUserTopsHandler),
-            (r'/about', handler.AboutHandler),
-            (r'/about/help', handler.HelpHanlder),
-            (r'/about/term', handler.TermHandler),
-            (r'/a/comment/new', handler.AjaxCommentHandler),
-            (r'/all', handler.CategoryHandler),
-            (r'/search', handler.SearchHandler),
+            (r'/', IndexHandler),
+            (r'/join', JoinHandler),
+            (r'/login', LoginHandler),
+            (r'/logout', LogoutHandler),
+            (r'/open/google', GoogleLoginHandler),
+            (r'/open/weibo', WeiboLoginHandler),
+            (r'/open/qq', QQLoginHandler),
+            (r'/open/renren', RenrenLoginHandler),
+            (r'/logout', LogoutHandler),
+            (r'/upload', UploadHandler),
+            (r'/upload_private', PrivateUploadHandler),
+            (r'/user/(\d+)', UserHandler),
+            (r'/user/(\d+)/do_follow', FollowHandler),
+            (r'/item/(\d+)', ItemHandler),
+            (r'/item/(\d+)/do_fav', FavHandler),
+            (r'/comment', CommentHandler),
+            (r'/settings', SettingsHandler),
+            (r'/settings/pwd', PasswordHandler),
+            (r'/settings/icon', IconHandler),
+            (r'/settings/crop', CropIconHandler),
+            (r'/notice', NoticeHandler),
+            (r'/user/(\d+)/followers', FollowerHandler),
+            (r'/user/(\d+)/friends', FriendHandler),
+            (r'/users', UsersHandler),
+            (r'/cmtdel', DeleteCommentHandler),
+            (r'/ajax/pubu', AjaxHandler),
+            (r'/ajax/re', AjaxRelationHandler),
+            (r'/ajax/likers', AjaxEntryLikerHandler),
+            (r'/ajax/tops', AjaxUserTopsHandler),
+            (r'/about', AboutHandler),
+            (r'/about/help', HelpHandler),
+            (r'/about/team', TeamHandler),
+            (r'/a/comment/new', AjaxCommentHandler),
+            (r'/all', CategoryHandler),
+            (r'/search', SearchHandler),
         ]
         ui_modules = {
-            'Account': module.AccountModule,
-            'Notice': module.NoticeModule,
-            'Entry': module.EntryModule,
-            'UserBoard': module.UserBoardModule,
-            'UserProfile': module.UserProfileModule,
-            'Person': module.PersonModule,
-            'Pager': module.PagerModule,
-            'Comment': module.CommentModule,
-            'Header': module.HeaderModule,
-            'CategoriesBar': module.CategoriesBarModule,
+            'Account': AccountModule,
+            'Notice': NoticeModule,
+            'Entry': EntryModule,
+            'UserBoard': UserBoardModule,
+            'UserProfile': UserProfileModule,
+            'Person': PersonModule,
+            'Pager': PagerModule,
+            'Comment': CommentModule,
+            'Header': HeaderModule,
+            'CategoriesBar': CategoriesBarModule,
         }
         settings = dict(
             template_path=os.path.join(

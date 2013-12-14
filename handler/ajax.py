@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import util
-import config
 import datetime
 import tornado.web
+
+
 from model import Relation
 from model import Fav
 from model import Entry
@@ -12,8 +13,12 @@ from model import SearchEngine
 from base import BaseHandler
 
 
+PAGE_SIZE = 20
+MAX_PAGE_SIZE = 100
+
+
 class AjaxHandler(BaseHandler):
-    
+
     @property
     def entry_dal(self): return Entry()
 
@@ -51,15 +56,15 @@ class AjaxHandler(BaseHandler):
             total = self.searchEngine.search_entries_count(q)
         else:
             total = self.entry_dal.get_count(None)
-        
+
         if total <= 0:
             result["code"] = 404
             self.render("ajax/pubu.json", result=result)
             return
-        
+
         tmp = offset
-        offset = (p - 1) * config.MAX_PAGE_SIZE + offset
-        limit = config.MINI_PAGE_SIZE
+        offset = (p - 1) * MAX_PAGE_SIZE + offset
+        limit = PAGE_SIZE
 
         if filter == "likes":
             entries = self.fav_dal.get_user_like_entries(
@@ -89,15 +94,15 @@ class AjaxHandler(BaseHandler):
                 self.current_user["_id"], tweet_ids)
             for tweet in entries:
                 tweet["iliked"] = True if tweet["_id"] in fids else False
-            
+
         tmp = tmp + len(entries)
         htmls = []
         for entry in entries:
             html = self.render_string("modules/entry.html", entry=entry)
             htmls.append(util.json_encode(html))
         result["html"] = htmls
-        
-        pager = tmp % config.MAX_PAGE_SIZE == 0
+
+        pager = tmp % MAX_PAGE_SIZE == 0
         final = (offset + len(entries)) >= total
         if pager: result["end"] = 1
         if final: result["end"] = 2
@@ -129,27 +134,27 @@ class AjaxRelationHandler(BaseHandler):
             total = self.relation.get_friends_count(int(user_id))
         else:
             total = self.relation.get_followers_count(int(user_id))
-        
+
         if total <= 0:
             self._render_error(result)
             return
-        
+
         tmp = offset
-        offset = (p - 1) * config.MAX_PAGE_SIZE + offset
-        limit = config.MINI_PAGE_SIZE
+        offset = (p - 1) * MAX_PAGE_SIZE + offset
+        limit = PAGE_SIZE
 
         if filter == "friends":
             users = self.relation.get_friends(int(user_id), offset, limit)
         else:
             users = self.relation.get_followers(int(user_id), offset, limit)
-        
+
         """Get Relations for the current user."""
         if self.current_user:
             ids = [u["_id"] for u in users]
             ifriends = self.relation.get_relations_by_ids(
                 self.current_user["_id"], ids)
             for user in users:
-                user["ifollow"] = True if user["_id"] in ifriends else False 
+                user["ifollow"] = True if user["_id"] in ifriends else False
 
         tmp = tmp + len(users)
         htmls = []
@@ -158,8 +163,8 @@ class AjaxRelationHandler(BaseHandler):
             html = self.render_string("modules/person.html", **args)
             htmls.append(util.json_encode(html))
         result["html"] = htmls
-        
-        pager = tmp % config.MAX_PAGE_SIZE == 0
+
+        pager = tmp % MAX_PAGE_SIZE == 0
         final = (offset + len(users)) >= total
         if pager: result["end"] = 1
         if final: result["end"] = 2
@@ -176,12 +181,12 @@ class AjaxUserTopsHandler(BaseHandler):
     def _render_error(self, result):
         result["code"] = 404
         self.render("ajax/tops.json", result=result)
-    
+
     def post(self):
         result = {"code": 200, "msg": "OK", "tops": [], "me_follow": 0}
         user_id = self.get_argument("user_id", None)
         limit = int(self.get_argument("limit", "4"))
-        
+
         if not (user_id and user_id.isdigit()):
             self._render_error(result)
             return
@@ -196,17 +201,17 @@ class AjaxUserTopsHandler(BaseHandler):
         result["me_follow"] = 1 if followed else 0
 
         self.render("ajax/tops.json", result=result)
-            
 
 
-class AjaxEntryLikers(BaseHandler):
+
+class AjaxEntryLikerHandler(BaseHandler):
     @property
     def fav_dal(self): return Fav()
 
     def _render_error(self, result):
         result["code"] = 404
         self.render("ajax/likers.json", result=result)
-    
+
     def post(self):
         result = {"code": 200, "msg": "OK", "likers": []}
         entry_id = self.get_argument("entry_id", None)
@@ -219,7 +224,7 @@ class AjaxEntryLikers(BaseHandler):
 
 
 class AjaxCommentHandler(BaseHandler):
-    
+
     @property
     def comment_dal(self): return Comment()
 
@@ -237,7 +242,7 @@ class AjaxCommentHandler(BaseHandler):
         comment = {
             "_id": self.comment_dal.get_id(),
             "user_id": user_id,
-            "user": self.comment_dal.dbref("users", user_id), 
+            "user": self.comment_dal.dbref("users", user_id),
             "entry_id": int(id),
             "entry": self.comment_dal.dbref("entries", int(id)),
             "content": content,
