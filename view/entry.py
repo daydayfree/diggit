@@ -32,6 +32,7 @@ class UploadHandler(BaseHandler):
         profile = self.get_argument("profile", True)
         tags = self.get_argument("tags", "").split(" ")
         description = self.get_argument("description", "")
+
         image_path = self.get_argument("Filedata.path", None)
         image_name = self.get_argument("Filedata.name", None)
         image_md5 = self.get_argument("Filedata.md5", None)
