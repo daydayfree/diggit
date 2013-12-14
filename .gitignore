@@ -1,14 +1,6 @@
 *~
 *.swp
 *.pyc
-log/*
-log
-icons
-icons/*
-icons_tmp
-icons_tmp/*
-upload
-upload/*
-upload_tmp
-upload_tmp/*
 .DS_Store
+venv
+TAGS
