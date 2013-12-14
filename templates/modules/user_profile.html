@@ -16,7 +16,7 @@
 				<strong>Follow</strong><span></span>
 			  </a>
 			  {% else %}
-			  <a class="Button13 Button WhiteButton disabled" href="javascript:void(0)" 
+			  <a class="Button13 Button WhiteButton disabled" href="javascript:void(0)"
 				 onclick="do_follow({{ user["_id"] }}">
 				<strong>Unfollow</strong><span></span>
 			  </a>
@@ -47,10 +47,18 @@
 			  </ul>
 			</td>
 			<td align="right" id="profileStatus">
-			  <a href="/user/{{ user["_id"] }}" class="selected"><strong>{{ user["entries"] }}</strong> images</a>
-			  <a href="/user/{{ user["_id"] }}?filter=likes"><strong>{{ user["likes"] }}</strong> likes/a>
-			  <a href="/user/{{ user["_id"] }}/followers"><strong>{{ user["followers"] }}</strong> funs</a>
-			  <a href="/user/{{ user["_id"] }}/friends"><strong>{{ user["friends"] }}</strong>followers</a>
+			  <a href="/user/{{ user["_id"] }}" class="selected">
+                <strong>{{ user["entries"] }}</strong> images
+              </a>
+			  <a href="/user/{{ user["_id"] }}?filter=likes">
+                <strong>{{ user["likes"] }}</strong> likes
+              </a>
+			  <a href="/user/{{ user["_id"] }}/followers">
+                <strong>{{ user["followers"] }}</strong> funs
+              </a>
+			  <a href="/user/{{ user["_id"] }}/friends">
+                <strong>{{ user["friends"] }}</strong> followers
+              </a>
 			</td>
 		  </tr>
 		</table>
