@@ -6,7 +6,8 @@ import time
 from PIL import Image
 from util import Log
 from util import get_uuid
-from settings import UPLOAD_DIR, MIDDLE_WIDTH, THUMB_SIZE, ICONS_DIR, ICON_BIG_WIDTH, ICON_WIDTH
+from corelib.consts import MIDDLE_WIDTH, THUMB_SIZE, ICON_BIG_WIDTH, ICON_WIDTH
+from settings import PHOTO_PATH, ICON_PATH
 
 
 def upload_crop(image_path, ext):
@@ -21,7 +22,7 @@ def upload_crop(image_path, ext):
     image_ext = ext[1:].upper()
     if image_ext == "JPG": image_ext = "JPEG"
 
-    store_dir = _get_image_dir(UPLOAD_DIR)
+    store_dir = _get_image_dir(PHOTO_PATH)
     base_name = get_uuid()
     source_name = "%s_source%s" % (base_name, ext)
     source_path = os.path.join(store_dir, source_name)
@@ -92,7 +93,7 @@ def icon_crop(user_id, icon_path, coords):
         return response
 
     image_path, ext = os.path.splitext(icon_path)
-    store_dir = _get_image_dir(ICONS_DIR)
+    store_dir = _get_image_dir(ICON_PATH)
     thumb_name = "u%s%s%s" % (user_id, str(int(time.time())), ext)
     thumb_path = os.path.join(store_dir, thumb_name)
 
@@ -107,7 +108,7 @@ def icon_crop(user_id, icon_path, coords):
     big_size = (ICON_BIG_WIDTH, ICON_BIG_WIDTH)
     img_thumb = img_thumb.resize(big_size, Image.ANTIALIAS)
     img_thumb.save(middle_path, quality=150)
-    
+
     thumb_size = (ICON_WIDTH, ICON_WIDTH)
     img_thumb = img_thumb.resize(thumb_size, Image.ANTIALIAS)
     img_thumb.save(thumb_path, quality=150)

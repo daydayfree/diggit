@@ -7,12 +7,12 @@ class AboutHandler(BaseHandler):
     def get(self):
         self.render("about.html")
 
-    
-class HelpHanlder(BaseHandler):
+
+class HelpHandler(BaseHandler):
     def get(self):
         self.render("help.html")
 
 
-class TermHandler(BaseHandler):
+class TeamHandler(BaseHandler):
     def get(self):
         self.render("term.html")

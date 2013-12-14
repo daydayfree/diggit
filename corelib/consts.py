@@ -1,0 +1,7 @@
+# -*- coding: utf-8 -*-
+
+MIDDLE_WIDTH = 225
+THUMB_SIZE = (75, 75)
+ICON_WIDTH = 50
+ICON_BIG_WIDTH = 160
+
