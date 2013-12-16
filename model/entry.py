@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
-#filename: model/entry.py
+# -*- coding: utf-8 -*-
 
-import datetime
+from datetime import datetime
 from model import Model
 from feed import Feed
 from notice import Notice
@@ -10,6 +8,7 @@ from comment import Comment
 
 
 class Entry(Model):
+
     table = "entries"
 
     def template(self):
@@ -29,7 +28,7 @@ class Entry(Model):
             "width": 0,
             "md5": "",
             "size": "",
-            "published": datetime.datetime.now(),
+            "published": datetime.now(),
             "updated": self.timestamp,
             "comments": 0,
             "likes": 0,
@@ -39,13 +38,16 @@ class Entry(Model):
         return entry
 
     @property
-    def comment_dal(self): return Comment()
+    def comment_dal(self):
+        return Comment()
 
     @property
-    def feed_dal(self): return Feed()
+    def feed_dal(self):
+        return Feed()
 
     @property
-    def fav_dal(self): return Fav()
+    def fav_dal(self):
+        return Fav()
 
     def save(self, tweet):
         return self.insert(tweet)
@@ -65,7 +67,7 @@ class Entry(Model):
             self.feed_dal.save(feed)
         else:
             if feed["entries"] and len(feed["entries"]):
-                feed["entries"] = [self.dbref("entries", e["_id"]) 
+                feed["entries"] = [self.dbref("entries", e["_id"])
                                    for e in feed["entries"]
                                    if e["_id"] != entry["_id"]]
             feed["entries"].append(self.dbref("entries", entry["_id"]))
@@ -113,7 +115,7 @@ class Entry(Model):
         entry = self.db.find_one(self.table, parameters)
         return entry
 
-    
+
     def get_primary_entries(self, user_id, published):
         parameters = {"published": {"$lte": published}, "user_id": user_id}
         prev_result = self.query(parameters, limit=4)
@@ -123,7 +125,7 @@ class Entry(Model):
 
         return {"next": next_result, "pre": prev_result}
 
-    
+
     def get_user_top_entries(self, user_id, limit=4):
         parameters = {"user_id": user_id}
         return self.query(parameters, limit=limit)

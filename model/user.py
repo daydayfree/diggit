@@ -1,31 +1,77 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
-#filename: model/user.py
+# -*- coding: utf-8 -*-
 
-from model import Model
-from notice import Notice
-from entry import Entry
+from bson import ObjectId
 
-class User(Model):
-    table = "users"
+from corelib.store import get_cursor
+from model.notice import Notice
+from model.entry import Entry
+
+
+class User(object):
+
+    table = 'user'
+
+    def __init__(self, id, name, email, city, blog='', intro='', uid=''):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.city = city
+        self.blog = blog
+        self.intro = intro
+        self.uid = uid or id
+
+    @property
+    def photo_count(self):
+        pass
+
+    @property
+    def like_count(self):
+        pass
+
+    @property
+    def following_count(self):
+        pass
+
+    @property
+    def followed_count(self):
+        pass
+
+    @classmethod
+    def get(cls, id):
+        query = {'_id': ObjectId(id)}
+        item = get_cursor(cls.table).find_one(query)
+
+        if not item:
+            return None
+        id = str(item.get('_id', ''))
+        name = item.get('name', '')
+        email = item.get('email')
+        city = item.get('city', '')
+        blog = item.get('blog', '')
+        intro = item.get('intro', '')
+        uid = item.get('uid') or id
+
+        if not email:
+            return None
+        return cls(id, name, email, city, blog, intro, uid)
 
     def template(self):
         user = {
             "_id": self.get_id(),
-            "name": '', 
-            "email": '', 
-            "city": '', 
-            "open": '', 
-            "remote_ip": '', 
+            "name": '',
+            "email": '',
+            "city": '',
+            "open": '',
+            "remote_ip": '',
             "domain": '',
-            "photo_url": '', 
-            "middle_photo_url": '', 
-            "bio": '', 
-            "username": '', 
+            "photo_url": '',
+            "middle_photo_url": '',
+            "bio": '',
+            "username": '',
             "link": '',
-            "entries": 0, 
-            "likes": 0, 
-            "followers": 0, 
+            "entries": 0,
+            "likes": 0,
+            "followers": 0,
             "friends": 0
         }
         return user
@@ -39,11 +85,6 @@ class User(Model):
         return self.update(parameters, user)
 
 
-    def get_user(self, user_id):
-        parameters = {"_id": int(user_id)}
-        return self.get(parameters)
-
-    
     def get_users(self, offset=0, limit=10):
         parameters = None
         return self.query(parameters, offset=offset, limit=limit)
