@@ -1,78 +1,116 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
-#filename: model/user.py
+# -*- coding: utf-8 -*-
 
-from model import Model
-from notice import Notice
-from entry import Entry
+from datetime import datetime
+from bson import ObjectId
+from corelib.store import get_cursor
 
-class User(Model):
-    table = "users"
 
-    def template(self):
-        user = {
-            "_id": self.get_id(),
-            "name": '', 
-            "email": '', 
-            "city": '', 
-            "open": '', 
-            "remote_ip": '', 
-            "domain": '',
-            "photo_url": '', 
-            "middle_photo_url": '', 
-            "bio": '', 
-            "username": '', 
-            "link": '',
-            "entries": 0, 
-            "likes": 0, 
-            "followers": 0, 
-            "friends": 0
-        }
-        return user
+class User(object):
+
+    table = 'user'
+
+    def __init__(self, id, name, email, city, blog='', intro='', uid='',
+                 create_time=None, update_time=None):
+        self.id = id
+        self.name = name
+        self.email = email
+        self.city = city
+        self.blog = blog
+        self.intro = intro
+        self.uid = uid or id
+        self.create_time = create_time
+        self.update_time = update_time
+
+    def __repr__(self):
+        return '<user:%s,name=%s>' % (self.id, self.name)
 
     @property
-    def entry_dal(self): return Entry()
+    def photo_count(self):
+        pass
 
+    @property
+    def like_count(self):
+        pass
 
-    def update_user(self, user):
-        parameters = {"_id": user["_id"]}
-        return self.update(parameters, user)
+    @property
+    def following_count(self):
+        pass
 
+    @property
+    def followed_count(self):
+        pass
 
-    def get_user(self, user_id):
-        parameters = {"_id": int(user_id)}
-        return self.get(parameters)
+    @classmethod
+    def new(cls, name, email, city='', blog='', intro='', uid=''):
+        current_time = datetime.now()
+        item = {
+            'name': name,
+            'email': email,
+            'city': city,
+            'blog': blog,
+            'intro': intro,
+            'uid': uid,
+            'create_time': current_time,
+            'update_time': current_time
+        }
+        id = get_cursor(cls.table).insert(item, safe=True)
+        if id:
+            return cls.get(id)
+        return None
 
-    
-    def get_users(self, offset=0, limit=10):
-        parameters = None
-        return self.query(parameters, offset=offset, limit=limit)
+    @classmethod
+    def initialize(cls, item):
+        if not item:
+            return None
+        id = str(item.get('_id', ''))
+        name = item.get('name', '')
+        email = item.get('email')
+        city = item.get('city', '')
+        blog = item.get('blog', '')
+        intro = item.get('intro', '')
+        uid = item.get('uid') or id
+        create_time = item.get('create_time')
+        update_time = item.get('update_time')
+        if not email:
+            return None
+        return cls(id, name, email, city, blog, intro, uid, create_time, update_time)
 
+    @classmethod
+    def get(cls, id):
+        query = {'_id': ObjectId(id)}
+        item = get_cursor(cls.table).find_one(query)
+        return cls.initialize(item)
 
-    def get_users_count(self):
-        parameters = None
-        return self.get_count(parameters)
+    @classmethod
+    def get_by_uid(cls, uid):
+        query = {'uid': uid}
+        item = get_cursor(cls.table).find_one(query)
+        return cls.initialize(item)
 
+    def update(self, name='', city='', blog='', intro='', uid=''):
+        query = {'_id': ObjectId(self.id)}
+        update = {}
+        if name:
+            update['name'] = name
+        if city:
+            update['city'] = city
+        if blog:
+            update['blog'] = blog
+        if intro:
+            update['intro'] = intro
+        if uid:
+            update['uid'] = uid
+        if update:
+            update['update_time'] = datetime.now()
+            get_cursor(self.table).update(query, {'$set': update}, safe=True)
+        return User.get(self.id)
 
-    def get_top_entries(self, user_id):
-        return self.entry_dal.get_user_top_entries(user_id)
+    @classmethod
+    def gets(cls, start=0, limit=10):
+        rs = get_cursor(cls.table).find('update_time', -1).sort()\
+                                  .skip(start).limit(limit)
+        return filter(None, [cls.initialize(r) for r in rs])
 
-
-    def update_entries_count(self, user_id, increment=1):
-        parameters = {"_id": user_id}
-        self.update(parameters, {"$inc": {"entries": increment}})
-
-
-    def update_likes_count(self, user_id, increment=1):
-        parameters = {"_id": user_id}
-        self.update(parameters, {"$inc": {"likes": increment}})
-
-
-    def update_followers_count(self, user_id, increment=1):
-        parameters = {"_id": user_id}
-        self.update(parameters, {"$inc": {"followers": increment}})
-
-
-    def update_friends_count(self, user_id, increment=1):
-        parameters = {"_id": user_id}
-        self.update(parameters, {"$inc": {"friends": increment}})
+    @classmethod
+    def get_count(cls):
+        return get_cursor(cls.table).count()
