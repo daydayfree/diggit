@@ -24,10 +24,7 @@ class Photo(object):
         self.comment_count = comment_count
 
     @classmethod
-    def get(cls, id):
-        query = {'_id': ObjectId(id)}
-        item = get_cursor(cls.table).find_one(query)
-
+    def initialize(cls, item):
         if not item:
             return None
         id = str(item.get('_id', ''))
@@ -46,6 +43,25 @@ class Photo(object):
 
         return cls(id, text, height, width, kinds, author_id, create_time,
                    update_time, like_count, comment_count)
+
+    @classmethod
+    def get(cls, id):
+        query = {'_id': ObjectId(id)}
+        item = get_cursor(cls.table).find_one(query)
+        return cls.initialize(item)
+
+    @classmethod
+    def gets(cls, start=0, limit=10):
+        rs = get_cursor(cls.table).find().sort('update_time', -1)\
+                                  .skip(start).limit(limit)
+        return filter(None, [cls.initialize(r) for r in rs])
+
+    @classmethod
+    def gets_by_user(cls, user_id, start=0, limit=10):
+        query = {'author_id': user_id}
+        rs = get_cursor(cls.table).find(query).sort('update_time', -1)\
+                                  .skip(start).limit(limit)
+        return filter(None, [cls.initialize(r) for r in rs])
 
     @property
     def author(self):
