@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from collections import OrderedDict
-from model import Model
-
-
-_CATEGORIES = {
+KIND = {
     '1000': '旅行',
     '1001': '艺术',
     '1002': '建筑',
@@ -38,8 +34,8 @@ _CATEGORIES = {
 }
 
 
-class Category(Model):
+class Kind(object):
 
-    def get_all(self):
-        return [{'_id': cid, 'name': name}
-                for cid, name in _CATEGORIES.items()]
+    def gets(self):
+        return [{'_id': cid, 'name': name} for cid, name in KIND.items()]
+

@@ -7,22 +7,16 @@ from corelib.store import get_cursor
 from model.photo import Photo
 from model.user import User
 
-STATUS_PENDING = 'pending'
-STATUS_PASS = 'pass'
-STATUS_DELETE = 'delete'
 
+class Like(object):
 
-class Flag(object):
+    table = "photo_like"
 
-    table = "photo_flag"
-
-    def __init__(self, id, photo_id, author_id, text, create_time, status):
+    def __init__(self, id, photo_id, author_id, create_time):
         self.id = id
         self.photo_id = photo_id
         self.author_id = author_id
-        self.text = text
         self.create_time = create_time
-        self.status = status
 
     @property
     def photo(self):
@@ -33,11 +27,10 @@ class Flag(object):
         return self.author_id and User.get(self.author_id)
 
     @classmethod
-    def new(cls, photo_id, author_id, text):
+    def new(cls, photo_id, author_id):
         item = {
             'photo_id': photo_id,
             'author_id': author_id,
-            'text': text,
             'create_time': datetime.now()
         }
         id = get_cursor(cls.table).insert(item, safe=True)
@@ -52,11 +45,10 @@ class Flag(object):
         id = str(item.get('_id', ''))
         photo_id = item.get('photo_id')
         author_id = item.get('author_id')
-        text = item.get('text')
         create_time = item.get('create_time')
         if not (id and photo_id and author_id):
             return None
-        return cls(id, photo_id, author_id, text, create_time)
+        return cls(id, photo_id, author_id, create_time)
 
     @classmethod
     def get(cls, id):
@@ -65,32 +57,35 @@ class Flag(object):
         return cls.initialize(item)
 
     @classmethod
-    def gets(cls, status=STATUS_PENDING, start=0, limit=10):
-        query = {}
-        if status:
-            query['status'] = status
-        rs = get_cursor(cls.table).find(query).sort('create_time', 1)\
+    def gets(cls, start=0, limit=10):
+        rs = get_cursor(cls.table).find().sort('create_time', 1)\
                                   .skip(start).limit(limit)
         return filter(None, [cls.initialize(r) for r in rs])
 
     @classmethod
-    def get_count(cls, status=STATUS_PENDING):
-        query = {}
-        if status:
-            query['status'] = status
+    def get_count(cls):
         return get_cursor(cls.table).find(query).count()
 
     @classmethod
-    def get_by_user_and_photo(cls, user_id, photo_id):
-        query = {
-            'photo_id': photo_id,
-            'author_id': author_id
-        }
-        item = get_cursor(cls.table).find_one(query)
+    def gets_by_user(cls, user_id, start=0, limit=10):
+        query = {'author_id': author_id}
+        rs = get_cursor(cls.table).find(query).sort('create_time')\
+                                  .skip(start).limit(limit)
         return cls.initialize(item)
 
-    def audit(self, status=STATUS_PASS):
-        query = {'_id': ObjectId(self.id)}
-        update = {'status': status}
-        get_cursor(cls.table).update(query, {'$set': update}, safe=True)
+    @classmethod
+    def get_count_by_user(cls, user_id):
+        query = {'author_id': author_id}
+        return get_cursor(cls.table).find(query).count()
 
+    @classmethod
+    def gets_by_photo(cls, photo_id, start=0, limit=10):
+        query = {'photo_id': photo_id}
+        rs = get_cursor(cls.table).find(query).sort('create_time')\
+                                  .skip(start).limit(limit)
+        return cls.initialize(item)
+
+    @classmethod
+    def get_count_by_photo(cls, photo_id):
+        query = {'photo_id': photo_id}
+        return get_cursor(cls.table).find(query).count()
