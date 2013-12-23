@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import pytest
 from model.user import User
 
 
 class TestUser(object):
 
-    def test_new(self):
+    def test_can_add_a_new_user(self):
         name = 'unittest1'
         email = 'unitest1@gmail.com'
         city = 'Beijing'
@@ -22,7 +21,7 @@ class TestUser(object):
         assert new.intro == new.intro
         assert new.uid == uid
 
-    def test_update(self):
+    def test_can_update_user_intro(self):
         uid = 'unittest1'
         user = User.get_by_uid(uid)
         assert user
@@ -32,5 +31,3 @@ class TestUser(object):
         assert new.intro == intro
 
 
-if __name__ == '__main__':
-    pytest.main()
