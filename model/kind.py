@@ -36,6 +36,7 @@ KIND = {
 
 class Kind(object):
 
+    @classmethod
     def gets(self):
         return [{'_id': cid, 'name': name} for cid, name in KIND.items()]
 

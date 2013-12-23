@@ -9,7 +9,7 @@
 	  {% end %}
 	  <ul id="CategoriesDropdown">
         <li>
-		  {% set categories = handler.get_all_categories() %}
+		  {% set categories = handler.categories %}
           <span class="SubmenuColumn">
 			{% for cate in categories[:15] %}
 			{% if category and category.isdigit() and int(category) == cate["_id"] %}
@@ -32,10 +32,10 @@
       </ul>
 	</li>
 	{% if current_user %}
-	<li><a class="nav" href="/user/{{ current_user["_id"] }}?filter=likes">Your likes</a>&nbsp;·</li>
-	<li><a class="nav" href="/user/{{ current_user["_id"] }}">Your Images</a>&nbsp;·</li>
+	<li><a class="nav" href="/user/{{ current_user.id }}?filter=likes">Your likes</a>&nbsp;·</li>
+	<li><a class="nav" href="/user/{{ current_user.id }}">Your Images</a>&nbsp;·</li>
 	{% end %}
-	{% set tags = handler.get_tags(0, 10) %}
+	{% set tags = handler.get_hot_tags(0, 10) %}
 	{% if tags and len(tags) %}
 	<li class="submenu">
 	  <a class="nav" href="#">Hot tags<span></span></a>
