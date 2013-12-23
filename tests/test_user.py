@@ -8,7 +8,7 @@ class TestUser(object):
 
     def test_new(self):
         name = 'unittest1'
-        email = 'unitest1@gmail.com'
+        email = 'unittest1@gmail.com'
         city = 'Beijing'
         blog = 'http://daydayfree.github.io'
         intro = 'I am a unittest!'

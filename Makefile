@@ -1,8 +1,11 @@
 init-dev:
 	pip install -r requirements.txt
 
+init-data:
+	python tools/init_data.py
+
 web:
-	python -W ignore server.py
+	python server.py
 
 test:
 	py.test tests/
