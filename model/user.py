@@ -58,6 +58,20 @@ class User(object):
             return cls.get(id)
         return None
 
+    def update_password(self, password):
+        query = {'user_id': self.id}
+        update = {
+            'user_id': self.id,
+            'password': password,
+            'update_time': datetime.now()
+        }
+        get_cursor('user_password').update(query, update, upsert=True)
+
+    def get_password(self):
+        query = {'user_id': self.id}
+        r = get_cursor('user_password').find_one(query)
+        return r and r.get('password')
+
     @classmethod
     def initialize(cls, item):
         if not item:
@@ -79,13 +93,19 @@ class User(object):
     def get(cls, id):
         query = {'_id': ObjectId(id)}
         item = get_cursor(cls.table).find_one(query)
-        return cls.initialize(item)
+        return item and cls.initialize(item)
 
     @classmethod
     def get_by_uid(cls, uid):
         query = {'uid': uid}
         item = get_cursor(cls.table).find_one(query)
-        return cls.initialize(item)
+        return item and cls.initialize(item)
+
+    @classmethod
+    def get_by_email(cls, email):
+        query = {'email': email}
+        item = get_cursor(cls.table).find_one(query)
+        return item and cls.initialize(item)
 
     def update(self, name='', city='', blog='', intro='', uid=''):
         query = {'_id': ObjectId(self.id)}
@@ -114,3 +134,8 @@ class User(object):
     @classmethod
     def get_count(cls):
         return get_cursor(cls.table).count()
+
+    @property
+    def avatar_url(self, category='thumb'):
+        # TODO
+        return 'http://img3.douban.com/icon/u3146440-17.jpg'

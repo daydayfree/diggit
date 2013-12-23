@@ -14,14 +14,14 @@
 		</ul>
 	  </li>
       <li id="UserNav">
-        <a class="nav" href="/user/{{ current_user["_id"] }}">
-		  <img alt="{{ current_user["name"] }}" src="{{ handler.get_photo_url(current_user) }}"/>{{ current_user["name"] }}<span></span>
+        <a class="nav" href="/user/{{ current_user.id }}">
+		  <img alt="{{ current_user.name }}" src="{{ current_user.avatar_url }}"/>{{ current_user.name }}<span></span>
 		</a>
         <ul>
-          <li><a href="/user/{{ current_user["_id"] }}">Home</a></li>
-		  <li><a href="/user/{{ current_user["_id"] }}?filter=likes">Likes</a></li>
-		  <li><a href="/user/{{ current_user["_id"] }}/friends">Following</a></li>
-          <li class="beforeDivider"><a href="/user/{{ current_user["_id"] }}/followers">Followed</a></li>
+          <li><a href="/user/{{ current_user.id }}">Home</a></li>
+		  <li><a href="/user/{{ current_user.id }}?filter=likes">Likes</a></li>
+		  <li><a href="/user/{{ current_user.id }}/friends">Following</a></li>
+          <li class="beforeDivider"><a href="/user/{{ current_user.id }}/followers">Followed</a></li>
           <li class="divider"><a href="/settings">Profile</a></li>
           <li><a href="/settings/pwd">Reset password</a></li>
 		  <li class="beforeDivider"><a href="/settings/icon">Modify photo</a></li>
@@ -29,8 +29,8 @@
         </ul>
       </li>
 	  {% else %}
-	  <li><a href="{{ "/login?next=%s" % url_escape(request.uri) }}" class="nav">Login</a></li>
-	  <li><a href="{{ "/join?next=%s" % url_escape(request.uri) }}" class="nav">Join</a></li>
+	    <li><a href="{{ "/login" }}" class="nav">Login</a></li>
+	    <li><a href="{{ "/join" }}" class="nav">Join</a></li>
 	  {% end %}
 	</ul>
 	<div id="Search">

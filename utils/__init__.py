@@ -1,7 +1,17 @@
-#!/usr/bin/env python
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-from util import *
-from image import upload_crop, icon_crop
-from pager import Pager
-from auth import *
+import uuid
+import hashlib
+import binascii
+
+from datetime import datetime
+
+
+def encrypt(key):
+    hash = hashlib.sha1()
+    hash.update(key)
+    return hash.hexdigest()
+
+
+def get_uuid():
+    return binascii.b2a_hex(uuid.uuid4().bytes)

@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-import os.path
+import os
 import tornado.web
 
 from tornado.options import define, options
@@ -21,30 +21,30 @@ from module import (
     HeaderModule, CategoriesBarModule
 )
 
-from view.home import (
-    IndexHandler, JoinHandler, LoginHandler, GoogleLoginHandler,
-    WeiboLoginHandler, QQLoginHandler, RenrenLoginHandler,
-    LogoutHandler, CategoryHandler
-)
-from view.entry import (
-    UploadHandler, PrivateUploadHandler, ItemHandler,
-    FavHandler, CommentHandler, DeleteCommentHandler
-)
-from view.user import (
-    UserHandler, FollowHandler, FollowerHandler, FriendHandler,
-    UsersHandler
-)
-from view.account import (
-    SettingsHandler, PasswordHandler, IconHandler,
-    CropIconHandler
-)
-from view.feed import NoticeHandler
-from view.ajax import (
-    AjaxHandler, AjaxRelationHandler, AjaxEntryLikerHandler, AjaxUserTopsHandler,
-    AjaxCommentHandler
-)
+from view.index import IndexHandler
+from view.login import JoinHandler, LoginHandler, LogoutHandler
+    #GoogleLoginHandler,
+    #WeiboLoginHandler, QQLoginHandler, RenrenLoginHandler,
+    #CategoryHandler
+#)
+#from view.entry import (
+#    UploadHandler, PrivateUploadHandler, ItemHandler,
+#    FavHandler, CommentHandler, DeleteCommentHandler
+#)
+#from view.user import (
+#    UserHandler, FollowHandler, FollowerHandler, FriendHandler,
+#    UsersHandler
+#)
+#from view.account import (
+#    SettingsHandler, PasswordHandler, IconHandler,
+#    CropIconHandler
+#)
+#from view.feed import NoticeHandler
+#from view.ajax import (
+#    AjaxHandler, AjaxRelationHandler, AjaxEntryLikerHandler, AjaxUserTopsHandler,
+#    AjaxCommentHandler
+#)
 from view.about import AboutHandler, HelpHandler, TeamHandler
-from view.searcher import SearchHandler
 
 
 class Application(tornado.web.Application):
@@ -54,37 +54,37 @@ class Application(tornado.web.Application):
             (r'/join', JoinHandler),
             (r'/login', LoginHandler),
             (r'/logout', LogoutHandler),
-            (r'/open/google', GoogleLoginHandler),
-            (r'/open/weibo', WeiboLoginHandler),
-            (r'/open/qq', QQLoginHandler),
-            (r'/open/renren', RenrenLoginHandler),
-            (r'/logout', LogoutHandler),
-            (r'/upload', UploadHandler),
-            (r'/upload_private', PrivateUploadHandler),
-            (r'/user/(\d+)', UserHandler),
-            (r'/user/(\d+)/do_follow', FollowHandler),
-            (r'/item/(\d+)', ItemHandler),
-            (r'/item/(\d+)/do_fav', FavHandler),
-            (r'/comment', CommentHandler),
-            (r'/settings', SettingsHandler),
-            (r'/settings/pwd', PasswordHandler),
-            (r'/settings/icon', IconHandler),
-            (r'/settings/crop', CropIconHandler),
-            (r'/notice', NoticeHandler),
-            (r'/user/(\d+)/followers', FollowerHandler),
-            (r'/user/(\d+)/friends', FriendHandler),
-            (r'/users', UsersHandler),
-            (r'/cmtdel', DeleteCommentHandler),
-            (r'/ajax/pubu', AjaxHandler),
-            (r'/ajax/re', AjaxRelationHandler),
-            (r'/ajax/likers', AjaxEntryLikerHandler),
-            (r'/ajax/tops', AjaxUserTopsHandler),
-            (r'/about', AboutHandler),
-            (r'/about/help', HelpHandler),
-            (r'/about/team', TeamHandler),
-            (r'/a/comment/new', AjaxCommentHandler),
-            (r'/all', CategoryHandler),
-            (r'/search', SearchHandler),
+            #(r'/open/google', GoogleLoginHandler),
+            #(r'/open/weibo', WeiboLoginHandler),
+            #(r'/open/qq', QQLoginHandler),
+            #(r'/open/renren', RenrenLoginHandler),
+            #(r'/logout', LogoutHandler),
+            #(r'/upload', UploadHandler),
+            #(r'/upload_private', PrivateUploadHandler),
+            #(r'/user/(\d+)', UserHandler),
+            #(r'/user/(\d+)/do_follow', FollowHandler),
+            #(r'/item/(\d+)', ItemHandler),
+            #(r'/item/(\d+)/do_fav', FavHandler),
+            #(r'/comment', CommentHandler),
+            #(r'/settings', SettingsHandler),
+            #(r'/settings/pwd', PasswordHandler),
+            #(r'/settings/icon', IconHandler),
+            #(r'/settings/crop', CropIconHandler),
+            #(r'/notice', NoticeHandler),
+            #(r'/user/(\d+)/followers', FollowerHandler),
+            #(r'/user/(\d+)/friends', FriendHandler),
+            #(r'/users', UsersHandler),
+            #(r'/cmtdel', DeleteCommentHandler),
+            #(r'/ajax/pubu', AjaxHandler),
+            #(r'/ajax/re', AjaxRelationHandler),
+            #(r'/ajax/likers', AjaxEntryLikerHandler),
+            #(r'/ajax/tops', AjaxUserTopsHandler),
+            #(r'/about', AboutHandler),
+            #(r'/about/help', HelpHandler),
+            #(r'/about/team', TeamHandler),
+            #(r'/a/comment/new', AjaxCommentHandler),
+            #(r'/all', CategoryHandler),
+            #(r'/search', SearchHandler),
         ]
         ui_modules = {
             'Account': AccountModule,
