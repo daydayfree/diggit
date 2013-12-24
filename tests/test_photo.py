@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 
-import pytest
-
-from model.user import User
+from framework import DiggitTestCase
 from model.photo import Photo
+from model.user import User
 
 
-class TestPhoto(object):
+class DiggitPhotoTestCase(DiggitTestCase):
 
-    def test_new(self):
-        user = User.get_by_uid('test1')
-        assert user
+    def test_can_add_a_new_photo(self):
+        name = 'unittest1'
+        email = 'unittest1@gmail.com'
+        city = 'Beijing'
+        blog = 'http://daydayfree.github.io'
+        intro = 'I am a unittest!'
+        uid = 'unittest2'
+        user = User.new(name, email, city, blog, intro, uid)
 
         text = 'Hello World!'
         height = 400
@@ -29,6 +33,3 @@ class TestPhoto(object):
         for tag in tags:
             assert tag in photo.tags
 
-
-if __name__ == '__main__':
-    pytest.main()
