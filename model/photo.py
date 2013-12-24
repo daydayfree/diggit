@@ -4,7 +4,7 @@ from datetime import datetime
 from bson import ObjectId
 
 from corelib.store import get_cursor
-from model.user import User
+from user import User
 
 
 class Photo(object):
@@ -116,9 +116,9 @@ class Photo(object):
     def inc_like_count(self, inc=1):
         query = {'_id': ObjectId(self.id)}
         update = {'$inc': {'like_count': inc}}
-        get_cursor(cls.table).update(query, update, safe=True)
+        get_cursor(self.table).update(query, update, safe=True)
 
     def inc_comment_count(self, inc=1):
         query = {'_id': ObjectId(self.id)}
         update = {'$inc': {'comment_count': inc}}
-        get_cursor(cls.table).update(query, update, safe=True)
+        get_cursor(self.table).update(query, update, safe=True)
