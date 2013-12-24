@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from framework import diggitTestCase
+from framework import DiggitTestCase
 from model.user import User
 
 
