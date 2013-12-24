@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
+from framework import diggitTestCase
 from model.user import User
 
 
-class TestUser(object):
+class TestUser(diggitTestCase):
 
     def test_can_add_a_new_user(self):
         name = 'unittest1'
