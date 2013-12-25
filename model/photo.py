@@ -4,7 +4,7 @@ from datetime import datetime
 from bson import ObjectId
 
 from corelib.store import get_cursor
-from user import User
+from model.user import User
 
 
 class Photo(object):

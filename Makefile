@@ -4,8 +4,11 @@ init-dev:
 init-data:
 	python tools/init_data.py
 
-web:
+web: clean_pyc
 	python server.py
 
-test:
+clean_pyc:
+	@find `pwd` \( -name '*.pyc' -o -name '*.ptlc' \) -type f -delete
+
+test: clean_pyc
 	py.test tests/
