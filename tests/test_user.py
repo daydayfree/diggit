@@ -4,7 +4,7 @@ from framework import DiggitTestCase
 from model.user import User
 
 
-class DiggtieUserTestCase(DiggitTestCase):
+class DiggitUserTestCase(DiggitTestCase):
 
     def test_can_add_a_new_user(self):
         name = 'unittest1'
