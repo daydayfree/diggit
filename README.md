@@ -1,7 +1,7 @@
 Diggit
 ===
 
-图片分享社区
+图片分享社区[代码正在整理中，暂时不可用]
 
 ![](http://img3.douban.com/view/group_topic/large/public/31629320-1.jpg)
 
