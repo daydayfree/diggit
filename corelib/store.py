@@ -12,3 +12,7 @@ db = mongo.diggit
 
 def get_cursor(table):
     return getattr(db, table)
+
+def clear_db():
+    for collection in db.collection_names():
+        get_cursor(collection).remove({})
