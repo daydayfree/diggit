@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import unittest
+from corelib.store import clear_db
 
 class DiggitTestCase(unittest.TestCase):
 
@@ -8,5 +9,6 @@ class DiggitTestCase(unittest.TestCase):
         pass
 
     def tearDown(self):
+        clear_db()
         pass
 
