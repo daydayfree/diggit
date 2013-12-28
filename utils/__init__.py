@@ -3,9 +3,7 @@
 import uuid
 import hashlib
 import binascii
-
-from datetime import datetime
-
+import logging as Log
 
 def encrypt(key):
     hash = hashlib.sha1()
