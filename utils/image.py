@@ -5,7 +5,7 @@ import time
 
 from PIL import Image
 
-from utils import get_uuid
+from utils import get_uuid, Log
 from corelib.consts import MIDDLE_WIDTH, THUMB_SIZE, ICON_BIG_WIDTH, ICON_WIDTH
 from settings import PHOTO_PATH, ICON_PATH
 
