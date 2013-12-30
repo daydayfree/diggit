@@ -12,10 +12,6 @@ from utils import Log
 
 class SettingsHandler(BaseHandler):
 
-    @property
-    def user_dal(self):
-        return User()
-
     @tornado.web.authenticated
     def get(self):
         self.render("account/settings.html", error=None)
@@ -23,22 +19,19 @@ class SettingsHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         user = self.current_user
-        user.name = self.get_argument("name", user.name)
-        user.city = self.get_argument("city", "")
-        user.blog = self.get_argument("link", "")
-        user.intro = self.get_argument("bio", "")
-        user_to_update = User.get_by_email(user.email)
-        result = user_to_update.update(user.name, user.city, user.blog, user.intro)
+        Log.info(user)
+        new_name = self.get_argument("name", user.name)
+        new_city = self.get_argument("city", "")
+        new_blog = self.get_argument("link", "")
+        new_intro = self.get_argument("bio", "")
+        result = user.update(new_name, new_city, new_blog, new_intro)
         if result:
             self.render("account/settings.html", error=130)
             return
         self.render("account/settings.html", error=131)
         return
-        
+
 class PasswordHandler(BaseHandler):
-    @property
-    def user_dal(self):
-        return User()
 
     error_message = {
         "140": "密码修改成功。",
@@ -56,14 +49,13 @@ class PasswordHandler(BaseHandler):
         user = self.current_user
         password = self.get_argument("pwd", "")
         new_pwd = self.get_argument("new_pwd", "")
-        if user["password"] != encrypt(password):
+        if user.get_password() != encrypt(password):
             self.render("account/pwd.html", error=141)
             return
         if new_pwd == "":
             self.render("account/pwd.html", error=142)
             return
-        user["password"] = encrypt(new_pwd)
-        result = self.user_dal.update_user(user)
+        result = user.update_password(encrypt(new_pwd))
         if result:
             self.render("account/pwd.html", error=143)
             return

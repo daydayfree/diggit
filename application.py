@@ -56,7 +56,7 @@ class Application(tornado.web.Application):
             (r'/login', LoginHandler),
             (r'/logout', LogoutHandler),
             (r'/settings', SettingsHandler),
-            (r'/settings/pwd/', PasswordHandler),
+            (r'/settings/pwd', PasswordHandler),
             #(r'/open/google', GoogleLoginHandler),
             #(r'/open/weibo', WeiboLoginHandler),
             #(r'/open/qq', QQLoginHandler),
