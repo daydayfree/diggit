@@ -22,8 +22,8 @@ class SettingsHandler(BaseHandler):
         Log.info(user)
         new_name = self.get_argument("name", user.name)
         new_city = self.get_argument("city", "")
-        new_blog = self.get_argument("link", "")
-        new_intro = self.get_argument("bio", "")
+        new_blog = self.get_argument("blog", "")
+        new_intro = self.get_argument("intro", "")
         result = user.update(new_name, new_city, new_blog, new_intro)
         if result:
             self.render("account/settings.html", error=130)
@@ -59,7 +59,6 @@ class PasswordHandler(BaseHandler):
         if result:
             self.render("account/pwd.html", error=143)
             return
-        current_user = user
         self.render("account/pwd.html", error=140)
 
 
@@ -81,7 +80,6 @@ class IconHandler(BaseHandler):
     def get(self):
         self.render("account/icon.html", error=None)
 
-
     @tornado.web.authenticated
     def post(self):
         if not self.request.files:
@@ -91,14 +89,14 @@ class IconHandler(BaseHandler):
         if len(files) == 0:
             self.render("account/icon.html", error=151)
             return
-        if files[0]["content_type"].split("/")[1] not in self.image_types:
+        image_type = files[0]["content_type"].split("/")[1]
+        if image_type not in self.image_types:
             self.render("account/icon.html", error=152)
             return
-        image_type = files[0]["content_type"].split("/")[1]
         """TODO头像分片存储"""
         ext = os.path.splitext(files[0]["filename"])[1]
         filepath = "u_%s_%s%s" % (
-            self.current_user["_id"], str(int(time.time())), ext)
+            self.current_user.id, str(int(time.time())), ext)
         file_dir = "%s/%s" % (self.settings["icon_dir"], filepath)
         try:
             writer = open(file_dir, "wb")
@@ -109,18 +107,11 @@ class IconHandler(BaseHandler):
             Log.error(ex)
             self.render("account/icon.html", error=153)
             return
-        result = self.user_dal.update_user(self.current_user)
-        if result:
-            self.render("account/icon.html", error=153)
-            return
         file_dir = file_dir.split("/icons_tmp/")[1]
         self.render("account/crop.html", error=None, file_path=file_dir)
 
 
 class CropIconHandler(BaseHandler):
-    @property
-    def user_dal(self):
-        return User()
 
     error_message = {
         "150": "头像设置成功。",

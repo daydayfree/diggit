@@ -33,15 +33,15 @@
       </div>
     </li>
     <li>
-      <label for="user_link">博客</label>
+      <label for="user_blog">博客</label>
       <div class="Right">
-      <input type="text" id="user_link" name="link" value="{{ current_user.blog }}"> 
+      <input type="text" id="user_blog" name="blog" value="{{ current_user.blog }}"> 
       </div>
     </li>
     <li>
-      <label for="user_bio">个人签名</label>
+      <label for="user_intro">个人签名</label>
       <div class="Right">
-      <textarea id="user_bio" name="bio">
+      <textarea id="user_intro" name="intro">
         {{ current_user.intro }}
       </textarea> 
       </div>
