@@ -138,4 +138,4 @@ class User(object):
     @property
     def avatar_url(self, category='thumb'):
         # TODO
-        return 'http://img3.douban.com/icon/u3146440-17.jpg'
+        return 'http://img3.douban.com/icon/ul65647191-17.jpg'
