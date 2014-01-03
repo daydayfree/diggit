@@ -63,9 +63,6 @@ class PasswordHandler(BaseHandler):
 
 
 class IconHandler(BaseHandler):
-    @property
-    def user_dal(self):
-        return User()
 
     error_message = {
         "150": "头像修改成功。",
@@ -136,16 +133,17 @@ class CropIconHandler(BaseHandler):
         coords = self.get_argument("coords")
         file_path = self.get_argument("file_path")
         tmp = "%s/%s" % (self.settings["icon_dir"], file_path)
-        response = icon_crop(self.current_user["_id"], tmp, coords)
+        response = icon_crop(self.current_user.id, tmp, coords)
         if not response["status"]:
             self.render("account/crop.html", error=152, file_path=file_path)
             return
-        photo_path = response["photo_path"].split("/icons/")[1]
-        middle_path = response["middle_path"].split("/icons/")[1]
+        photo_path = response["photo_path"].split("/icon/")[1]
+        middle_path = response["middle_path"].split("/icon/")[1]
         user = self.current_user
-        user["photo_url"] = photo_path
-        user["middle_photo_url"] = middle_path
-        result = self.user_dal.update_user(user)
+        user.photo_url = photo_path
+        user.middle_photo_url = middle_path
+        # TODO:生成新的头像的 url ~
+        result = 0
         if result:
             self.render("account/crop.html", error=152, file_path=file_path)
             return

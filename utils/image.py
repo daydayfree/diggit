@@ -99,7 +99,6 @@ def icon_crop(user_id, icon_path, coords):
 
     middle_name = "u%s%sb%s" % (user_id, str(int(time.time())), ext)
     middle_path = os.path.join(store_dir, middle_name)
-
     img = Image.open(icon_path)
     left, top, width, height = tuple([int(i) for i in coords.split("|")])
     box = (left, top, left+width, top+height)
