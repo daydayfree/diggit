@@ -45,7 +45,7 @@ from view.login import JoinHandler, LoginHandler, LogoutHandler
 #    AjaxCommentHandler
 #)
 from view.about import AboutHandler, HelpHandler, TeamHandler
-from view.account import SettingsHandler, PasswordHandler
+from view.account import SettingsHandler, PasswordHandler, IconHandler, CropIconHandler
 
 
 class Application(tornado.web.Application):
@@ -57,6 +57,8 @@ class Application(tornado.web.Application):
             (r'/logout', LogoutHandler),
             (r'/settings', SettingsHandler),
             (r'/settings/pwd', PasswordHandler),
+            (r'/settings/icon', IconHandler),
+            (r'/settings/crop', CropIconHandler),
             #(r'/open/google', GoogleLoginHandler),
             #(r'/open/weibo', WeiboLoginHandler),
             #(r'/open/qq', QQLoginHandler),
