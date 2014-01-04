@@ -5,8 +5,7 @@ MONGODB_CONFIG = {
     'PORT': 27017,
 }
 
-PHOTO_PATH = '/home/vagrant/var/diggit/upload/'
-ICON_PATH = '/home/vagrant/var/diggit/icon/'
+PHOTO_PATH = '~/upload/'
 
 try:
     from local_settings import *
