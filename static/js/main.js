@@ -15,7 +15,7 @@ function do_fav(entry_id, obj) {
 		if (msg == "true") {
 			$(obj).removeClass().addClass("Button Button13 WhiteButton disabled clickable unlike_pin");
 			$(obj).html("<strong>取消喜欢</strong><span></span>");
-		} 
+		}
 		if (msg == "false") {
 			$(obj).removeClass().addClass("Button Button13 WhiteButton like_pin");
 			$(obj).html("<strong><em></em>喜欢</strong><span></span>");
@@ -50,7 +50,7 @@ function cmtdel(id, tweetId) {
 	});
 }
 
-function tooltip(id) { 
+function tooltip(id) {
 	var items = $("#items_similar img");
 	var index = 0;
 	var pre = "";
@@ -66,7 +66,7 @@ function tooltip(id) {
 			next = $(items[index + 1]).parent().attr("href");
 		}
 	}
-	$("#item-tip").mousemove(function(e) { 
+	$("#item-tip").mousemove(function(e) {
 		var positionX=e.pageX-$(this).offset().left;
 		var positionY=e.pageY-$(this).offset().top;
 
@@ -74,13 +74,13 @@ function tooltip(id) {
 			$(this).parent().attr('href', pre);
 			$(this).css({cursor:"url(/static/images/item-pre.ico),auto"});
 		} else {
-			$(this).parent().attr('href', next); 
+			$(this).parent().attr('href', next);
 			$(this).css({cursor:"url(/static/images/item-next.ico),auto"});
-		} 
+		}
 	});
-	
-	$("#item-tip").mouseout(function(e) { 
-	});    
+
+	$("#item-tip").mouseout(function(e) {
+	});
 }
 
 function getMinColumn() {
@@ -107,7 +107,7 @@ function searchEntries(q) {
 
 
 function fetchEntriesBase(userId, filter, category, q) {
-	loading = true;
+	var loading = true;
 	$("#LoadingPins").css("display", "block");
 
 	var p = parseInt($("#p").val());
@@ -126,25 +126,15 @@ function fetchEntriesBase(userId, filter, category, q) {
 	if (q != "-1") {
 		args.q = q;
 	}
-	$.ajax({
-		type: "POST",
-		url: "/ajax/pubu",
-		data: $.param(args)
-	}).done(function(response) {
-		eval("response = " + response);
-		if (response["code"] == 200) {
-			tweets = response["html"];
-			for (var i=0; i<tweets.length; i++) {
+	$.ajax({type: "POST", url: "/j/photos/", data: $.param(args)}).done(function(r) {
+        r = $.parseJSON(r);
+		if (r.code === 200) {
+			for (var i=0; i<r.photos.length; i++) {
 				var index = getMinColumn();
-				$(tweets[i]).appendTo($(idPrefix + index));
+				$(r.photos[i]).appendTo($(idPrefix + index));
 			}
-			/* end */
-			if(response["end"] == 1) {
+			if(r.end === true) {
 				$("#pager").css("display", "block");
-				finished = true;
-			}
-			/* final */
-			if (response["end"] == 2) {
 				finished = true;
 			}
 		}
@@ -269,7 +259,7 @@ function fetchEntryLikers(tweetId, targetDiv) {
 			if (response["likers"].length > 0) {
 				for (var i=0; i<response["likers"].length; i++) {
 					var liker = response["likers"][i];
-					var html = "<a title='" + liker["name"] + "' class='CommenterImage tipsyHover' href='/user/" + liker["id"] + "'>" + 
+					var html = "<a title='" + liker["name"] + "' class='CommenterImage tipsyHover' href='/user/" + liker["id"] + "'>" +
 						"<img src='" + liker["photo_url"] + "'/></a>";
 					$(html).appendTo($("#" + targetDiv));
 				}

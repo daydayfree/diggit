@@ -34,6 +34,14 @@ class Photo(object):
     def filename(self):
         return 'p%s.jpg' % self.id
 
+    def url(self, category='photo'):
+        # TODO
+        return 'http://img5.douban.com/view/photo/photo/public/p2164203249.jpg'
+
+    def liked(self, user_id):
+        # TODO
+        return False
+
     @classmethod
     def new(cls, text, kinds, tags, author_id, content):
         current_time = datetime.now()
@@ -141,3 +149,7 @@ class Photo(object):
         query = {'_id': ObjectId(self.id)}
         update = {'$inc': {'comment_count': inc}}
         get_cursor(self.table).update(query, update, safe=True)
+
+    def get_comments(self, start=0, limit=3):
+        # TODO
+        return []

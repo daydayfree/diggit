@@ -29,6 +29,7 @@ from view.account import (
     CropIconHandler
 )
 from view.photo import UploadHandler
+from view.j.photo import IndexPhotoHandler
 
 
 class Application(tornado.web.Application):
@@ -63,7 +64,7 @@ class Application(tornado.web.Application):
             #(r'/user/(\d+)/friends', FriendHandler),
             #(r'/users', UsersHandler),
             #(r'/cmtdel', DeleteCommentHandler),
-            #(r'/ajax/pubu', AjaxHandler),
+            (r'/j/photos/', IndexPhotoHandler),
             #(r'/ajax/re', AjaxRelationHandler),
             #(r'/ajax/likers', AjaxEntryLikerHandler),
             #(r'/ajax/tops', AjaxUserTopsHandler),
