@@ -4,6 +4,7 @@ from datetime import datetime
 from bson import ObjectId
 
 from corelib.store import get_cursor
+from utils.image import crop_photo
 from model.user import User
 
 
@@ -25,13 +26,19 @@ class Photo(object):
         self.like_count = like_count
         self.comment_count = comment_count
 
+    @property
+    def author(self):
+        return self.author_id and User.get(self.author_id)
+
+    @property
+    def filename(self):
+        return 'p%s.jpg' % self.id
+
     @classmethod
-    def new(cls, text, height, width, kinds, tags, author_id):
+    def new(cls, text, kinds, tags, author_id, content):
         current_time = datetime.now()
         item = {
             'text': text,
-            'height': height,
-            'width': width,
             'kinds': kinds,
             'tags': tags,
             'author_id': author_id,
@@ -42,6 +49,13 @@ class Photo(object):
         }
         id = get_cursor(cls.table).insert(item, safe=True)
         if id:
+            photo = cls.get(id)
+            if not photo:
+                return None
+            r = crop_photo(photo.filename, content)
+            if r:
+                width, height = r
+                cls.update(id, width=width, height=height)
             return cls.get(id)
         return None
 
@@ -74,6 +88,11 @@ class Photo(object):
         return cls.initialize(item)
 
     @classmethod
+    def delete(cls, id):
+        query = {'_id': ObjectId(id)}
+        get_cursor(cls.table).remove(query)
+
+    @classmethod
     def gets(cls, start=0, limit=10):
         rs = get_cursor(cls.table).find().sort('update_time', -1)\
                                   .skip(start).limit(limit)
@@ -91,10 +110,6 @@ class Photo(object):
         query = {'author_id': user_id}
         return get_cursor(cls.table).find(query).count()
 
-    @property
-    def author(self):
-        return self.author_id and User.get(self.author_id)
-
     @classmethod
     def gets_by_category(cls, category, start=0, limit=10):
         query = {'kinds': {'$all': [category]}}
@@ -108,9 +123,13 @@ class Photo(object):
         return get_cursor(cls.table).find(query).count()
 
     @classmethod
-    def update(cls, id, text):
+    def update(cls, id, text=None, width=None, height=None):
+        update = {}
+        if text:
+            update['text'] = text
+        if width and height:
+            update.update({'width': width, 'height': height})
         query = {'_id': ObjectId(id)}
-        update = {'text': text}
         get_cursor(cls.table).update(query, {'$set': update}, safe=True)
 
     def inc_like_count(self, inc=1):

@@ -6,7 +6,7 @@ import tornado.web
 from base import BaseHandler
 from model.user import User
 from utils import encrypt
-from utils.image import icon_crop
+from utils.image import crop_icon
 from utils import Log
 
 
@@ -30,6 +30,7 @@ class SettingsHandler(BaseHandler):
             return
         self.render("account/settings.html", error=131)
         return
+
 
 class PasswordHandler(BaseHandler):
 
@@ -133,7 +134,7 @@ class CropIconHandler(BaseHandler):
         coords = self.get_argument("coords")
         file_path = self.get_argument("file_path")
         tmp = "%s/%s" % (self.settings["icon_dir"], file_path)
-        response = icon_crop(self.current_user.id, tmp, coords)
+        response = crop_icon(self.current_user.id, tmp, coords)
         if not response["status"]:
             self.render("account/crop.html", error=152, file_path=file_path)
             return

@@ -23,48 +23,31 @@ from module import (
 
 from view.index import IndexHandler
 from view.login import JoinHandler, LoginHandler, LogoutHandler
-    #GoogleLoginHandler,
-    #WeiboLoginHandler, QQLoginHandler, RenrenLoginHandler,
-    #CategoryHandler
-#)
-#from view.entry import (
-#    UploadHandler, PrivateUploadHandler, ItemHandler,
-#    FavHandler, CommentHandler, DeleteCommentHandler
-#)
-#from view.user import (
-#    UserHandler, FollowHandler, FollowerHandler, FriendHandler,
-#    UsersHandler
-#)
-#from view.account import (
-#    SettingsHandler, PasswordHandler, IconHandler,
-#    CropIconHandler
-#)
-#from view.feed import NoticeHandler
-#from view.ajax import (
-#    AjaxHandler, AjaxRelationHandler, AjaxEntryLikerHandler, AjaxUserTopsHandler,
-#    AjaxCommentHandler
-#)
 from view.about import AboutHandler, HelpHandler, TeamHandler
-from view.account import SettingsHandler, PasswordHandler, IconHandler, CropIconHandler
+from view.account import (
+    SettingsHandler, PasswordHandler, IconHandler,
+    CropIconHandler
+)
+from view.photo import UploadHandler
 
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
             (r'/', IndexHandler),
-            (r'/join', JoinHandler),
-            (r'/login', LoginHandler),
-            (r'/logout', LogoutHandler),
-            (r'/settings', SettingsHandler),
-            (r'/settings/pwd', PasswordHandler),
-            (r'/settings/icon', IconHandler),
-            (r'/settings/crop', CropIconHandler),
+            (r'/join/', JoinHandler),
+            (r'/login/', LoginHandler),
+            (r'/logout/', LogoutHandler),
+            (r'/settings/', SettingsHandler),
+            (r'/settings/pwd/', PasswordHandler),
+            (r'/settings/icon/', IconHandler),
+            (r'/settings/crop/', CropIconHandler),
             #(r'/open/google', GoogleLoginHandler),
             #(r'/open/weibo', WeiboLoginHandler),
             #(r'/open/qq', QQLoginHandler),
             #(r'/open/renren', RenrenLoginHandler),
             #(r'/logout', LogoutHandler),
-            #(r'/upload', UploadHandler),
+            (r'/upload/', UploadHandler),
             #(r'/upload_private', PrivateUploadHandler),
             #(r'/user/(\d+)', UserHandler),
             #(r'/user/(\d+)/do_follow', FollowHandler),

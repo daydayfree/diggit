@@ -13,26 +13,29 @@ class FileStore(object):
 
     def path(self, filename, category=None):
         if category:
-            return "%s/%s/%s" % (self.domain, category, filename)
+            return '%s/%s/%s' % (self.domain, category, filename)
         else:
-            return "%s/%s" % (self.domain, filename)
+            return '%s/%s' % (self.domain, filename)
 
     def filepath(self, filename, category=None):
         if filename[:1] in 'xp':
             filename = filename[1:]
         path = self.path(filename, category)
-        return os.path.join(PHOTO_PATH, path)
+        filepath = os.path.join(PHOTO_PATH, path)
+        if not os.path.exists(os.path.dirname(filepath)):
+            os.makedirs(os.path.dirname(filepath))
+        return filepath
 
     def load(self, filename, category=None):
         path = self.filepath(filename, category)
         if os.path.exists(path):
-            return open(path).read()
+            return open(path, 'rb').read()
 
     def save(self, filename, content, category=None):
         path = self.filepath(filename, category)
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
-        open(path, 'w').write(content)
+        open(path, 'wb').write(content)
         return path
 
     def delete(self, filename, category=None):
@@ -50,7 +53,7 @@ class FileStore(object):
             shutil.copyfile(path, new_path)
             return new_path
 
-    def exists(self, filename, category=""):
+    def exists(self, filename, category=None):
         path = self.filepath(filename, category)
         return os.path.exists(path)
 

@@ -1,0 +1,48 @@
+{% extends "../base.html" %}
+
+{% block head %}
+  <link href="{{static_url("css/upload.css")}}" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="{{static_url("js/upload.js")}}"></script>
+  <script type="text/javascript" src="{{static_url("js/upload.queue.js")}}"></script>
+  <script type="text/javascript" src="{{static_url("js/upload.progress.js")}}"></script>
+  <script type="text/javascript" src="{{static_url("js/upload.handlers.js")}}"></script>
+  <script type="text/javascript">
+
+  </script>
+  <script type="text/javascript" src="{{static_url("js/photo.js")}}"></script>
+{% end %}
+
+{% block canvas %}
+<div>
+  <div id="login_logo"></div>
+  <input type="hidden" id="upload-swf-url" value="{{static_url('upload.swf')}}"/>
+  <form action="/upload/" method="post" enctype="multipart/form-data" class="Form StaticForm form-upload" id="profileEdit">
+    <h3>上传图片</h3>
+    <ul>
+      <li>
+        <label for="text">描述</label>
+        <div class="Right">
+          <textarea id="text" rows="3" name="text"></textarea>
+        </div>
+      </li>
+      <li>
+    <label for="tags">标签</label>
+    <div class="Right">
+      <input id="tags" type="text" name="tags"/>
+        <span class="help_text">用逗号分隔</span>
+        </div>
+      </li>
+    </ul>
+    <div class="Submit">
+      <div class="fieldset flash" id="fsUploadProgress"></div>
+      <div class="clear"></div>
+      <div id="divStatus"></div>
+      <div>
+        <span id="spanButtonPlaceHolder"></span>
+        <input id="btn-cancel" type="button" value="取消" style="display: none"/>
+      </div>
+    </div>
+    {{ xsrf_form_html() }}
+  </form>
+</div>
+{% end %}
