@@ -3,7 +3,10 @@ python:
   - "2.6"
   - "2.7"
 install: "pip install -r requirements.txt"
+before_install:
+  - sudo apt-get install libjpeg-dev
+  - sudo ln -s /usr/lib/x86_64-linux-gnu/libjpeg.so /usr/lib
+  - sudo ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib
+  - sudo ln -s /usr/lib/x86_64-linux-gnu/libz.so /usr/lib
 script: make test
-before_script:
-  - ./tools/init_data.py
 services: mongodb
