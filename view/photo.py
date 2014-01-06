@@ -17,7 +17,7 @@ class UploadHandler(BaseHandler):
         user = self.current_user
         text = self.get_argument('text', '')
         kinds = self.get_arguments('kinds', [])
-        tags = self.get_argument('tags', [])
+        tags = self.get_argument('tags', '')
         f = self.request.files.get('file')
         content = f[0].body if f else None
 
