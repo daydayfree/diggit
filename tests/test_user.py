@@ -18,6 +18,7 @@ def add_user(request):
     self.user = user
     return user
 
+
 @pytest.mark.usefixtures("add_user")
 class DiggitUserTestCase(DiggitTestCase):
 

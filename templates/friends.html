@@ -18,12 +18,12 @@ $(window).ready(function() {
 </div>
 
 <div id="LoadingPins">
-  <img alt="loading..." src="{{ static_url("images/BouncingLoader.gif") }}"/>
+  <img alt="loading..." src="{{ static_url("img/BouncingLoader.gif") }}"/>
   <span>loading...</span>
 </div>
 <div id="pager" style="display: none;">
   <a class='Button Button13 WhiteButton' href='/user/{{ user["_id"] }}/friends?p={{ p+1 }}'>
-	<strong> More... </strong><span></span>
+    <strong> More... </strong><span></span>
   </a>
 </div>
 <input id="p" type="hidden" value="{{ p }}">

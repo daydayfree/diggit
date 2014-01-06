@@ -1,146 +1,74 @@
 # -*- coding: utf-8 -*-
 
-import os
-import time
-
 from PIL import Image
 
-from utils import get_uuid, Log
-from corelib.consts import MIDDLE_WIDTH, THUMB_SIZE, ICON_BIG_WIDTH, ICON_WIDTH
-from settings import PHOTO_PATH, ICON_PATH
+from corelib.filestore import fs
+from corelib.consts import (
+    MIDDLE_WIDTH, THUMB_WIDTH, THUMB_HEIGHT, ICON_WIDTH,
+    ICON_ORIGIN_WIDTH
+)
 
 
-def upload_crop(image_path, ext):
-    response = {}
-    pin_width = 0
-    pin_height = 0
-    if not os.path.exists(image_path):
-        response["status"] = True
-        response["message"] = "Not found: %s" % image_path
-        return response
+def crop_photo(filename, content):
+    source_path = fs.save(filename, content, 'origin')
 
-    image_ext = ext[1:].upper()
-    if image_ext == "JPG": image_ext = "JPEG"
+    image = Image.open(source_path)
+    width, height = image.size
 
-    store_dir = _get_image_dir(PHOTO_PATH)
-    base_name = get_uuid()
-    source_name = "%s_source%s" % (base_name, ext)
-    source_path = os.path.join(store_dir, source_name)
-    thumb_name = "%s_thumb%s" % (base_name, ext)
-    thumb_path = os.path.join(store_dir, thumb_name)
-    middle_name = "%s_mid%s" % (base_name, ext)
-    middle_path = os.path.join(store_dir, middle_name)
+    middle_width = MIDDLE_WIDTH
+    if width < middle_width or height < middle_width:
+        return False
 
-    # source
-    try:
-        os.rename(image_path, source_path)
-    except Exception:
-        Log.error("Save source error: %s" % image_path)
-        response["status"] = False
-        response["message"] = "Save source error: %s" % image_path
-        return response
-
-    img = Image.open(source_path)
-    # middle
-    dest_width = MIDDLE_WIDTH
-    width, height = img.size
-    if width < dest_width or height < dest_width:
-        response["status"] = False
-        response["message"] = "Image size too small"
-        return response
-    dest_height = int(float(dest_width) * float(height) / float(width))
-    img_mid = img.resize((dest_width, dest_height), Image.ANTIALIAS)
-    img_mid.save(middle_path, image_ext, quality=150)
-
-    pin_width, pin_height = (dest_width, dest_height)
+    middle_height = int(float(middle_width) * float(height) / float(width))
+    middle_image = image.resize((middle_width, middle_height), Image.ANTIALIAS)
+    middle_path = fs.filepath(filename, 'photo')
+    middle_image.save(middle_path, quality=150)
 
     # thumb
-    dest_width, dest_height = THUMB_SIZE
-    left, upper, right, lowwer = 0, 0, dest_width, dest_height
-    crop_width, crop_height = dest_width, dest_height
-    if float(dest_width)/float(dest_height) < float(width)/float(height):
+    left, upper, right, lowwer = 0, 0, THUMB_WIDTH, THUMB_HEIGHT
+    crop_width, crop_height = THUMB_WIDTH, THUMB_HEIGHT
+    if float(THUMB_WIDTH)/float(THUMB_HEIGHT) < float(width)/float(height):
         crop_height = height
-        crop_width = int(height * (float(dest_width) / float(dest_height)))
+        crop_width = int(height * (float(THUMB_WIDTH) / float(THUMB_HEIGHT)))
         left = int((width - crop_width) / 2)
         right = left + crop_width
         lowwer = height
     else:
         crop_width = width
-        crop_height = int(width * (float(dest_height) / float(dest_width)))
+        crop_height = int(width * (float(THUMB_HEIGHT) / float(THUMB_WIDTH)))
         upper = int((height - crop_height) / 2)
         lowwer = upper + crop_height
         right = width
 
     box = (left, upper, right, lowwer)
-    img_thumb = img.crop(box)
-    img_thumb = img_thumb.resize((dest_width, dest_height), Image.ANTIALIAS)
-    img_thumb.save(thumb_path, image_ext, quality=150)
+    thumb_image = image.crop(box)
+    thumb_image = thumb_image.resize((THUMB_WIDTH, THUMB_HEIGHT), Image.ANTIALIAS)
+    thumb_path = fs.filepath(filename, 'thumb')
+    thumb_image.save(thumb_path, quality=150)
 
-    response["status"] = True
-    response["source_path"] = source_path
-    response["thumb_path"] = thumb_path
-    response["middle_path"] = middle_path
-    response["height"] = pin_height
-    response["width"] = pin_width
-    return response
+    return middle_width, middle_height
 
 
-def icon_crop(user_id, icon_path, coords):
-    response = {}
-    if not os.path.exists(icon_path):
-        response["status"] = False
-        response["message"] = "Not Found: %s" % icon_path
-        return response
+def crop_icon(filename, content, coords):
+    coords = coords.split(',')
+    if len(coords) != 4:
+        return False
+    left, top, width, height = map(int, coords)
 
-    image_path, ext = os.path.splitext(icon_path)
-    store_dir = _get_image_dir(ICON_PATH)
-    thumb_name = "u%s%s%s" % (user_id, str(int(time.time())), ext)
-    thumb_path = os.path.join(store_dir, thumb_name)
+    source_path = fs.save(filename, 'origin')
 
-    middle_name = "u%s%sb%s" % (user_id, str(int(time.time())), ext)
-    middle_path = os.path.join(store_dir, middle_name)
-    img = Image.open(icon_path)
-    left, top, width, height = tuple([int(i) for i in coords.split("|")])
+    image = Image.open(source_path)
     box = (left, top, left+width, top+height)
-    img_thumb = img.crop(box)
+    origin_image = image.crop(box)
 
-    big_size = (ICON_BIG_WIDTH, ICON_BIG_WIDTH)
-    img_thumb = img_thumb.resize(big_size, Image.ANTIALIAS)
-    img_thumb.save(middle_path, quality=150)
+    origin_image = origin_image.resize((ICON_ORIGIN_WIDTH, ICON_ORIGIN_WIDTH),
+                                       Image.ANTIALIAS)
+    origin_path = fs.filepath(filename, 'photo')
+    origin_image.save(origin_path, quality=150)
 
-    thumb_size = (ICON_WIDTH, ICON_WIDTH)
-    img_thumb = img_thumb.resize(thumb_size, Image.ANTIALIAS)
-    img_thumb.save(thumb_path, quality=150)
+    thumb_image = origin_image.resize((ICON_WIDTH, ICON_WIDTH), Image.ANTIALIAS)
+    thumb_path = fs.filepath(filename, 'thumb')
+    thumb_image.save(thumb_path, quality=150)
 
-    try:
-        os.remove(icon_path)
-    except Exception, ex:
-        Log.info(ex)
-
-    response["status"] = True
-    response["photo_path"] = thumb_path
-    response["middle_path"] = middle_path
-    return response
-
-
-def _get_image_dir(holder):
-    year, month, day = \
-        time.strftime('%Y-%m-%d', time.localtime(time.time())).split("-")
-    path = os.path.join(holder, year)
-    if not os.path.exists(path):
-        os.mkdir(path)
-    path = os.path.join(path, month)
-    if not os.path.exists(path):
-        os.mkdir(path)
-    path = os.path.join(path, day)
-    if not os.path.exists(path):
-        os.mkdir(path)
-    return path
-
-
-def _get_unique_path(path, name):
-    """判断路径是否存在，存在则文件名添加时间戳。"""
-    tmp = os.path.join(path, name)
-    if os.path.exists(tmp):
-        name = "%s%s" % (str(int(time.time())), name)
-    return name
+    fs.delete(filename, 'origin')
+    return True

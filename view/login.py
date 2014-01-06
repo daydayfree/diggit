@@ -16,7 +16,8 @@ class JoinHandler(BaseHandler):
         '111': '用户名最多15个字符。',
         '112': 'Email不正确。',
         '113': 'Email已经被使用。',
-        '114': '注册失败，请稍后再试试。'}
+        '114': '注册失败，请稍后再试试。'
+    }
 
     def get(self):
         self.render('join.html', error=None, name='', email='')
@@ -55,26 +56,26 @@ class LoginHandler(BaseHandler):
 
     def post(self):
         email = self.get_argument('email', '')
-        password = self.get_argument('password', None)
+        password = self.get_argument('password', '')
 
-        if email=='' or not password:
+        if not (email and password):
             self.render('login.html', error=100, email=email)
-            return
 
-        #parameters = {'email': email, 'password': sha1(password)}
-        #user = self.user_dal.get(parameters)
-        #if not user:
-        #    self.render('login.html', error=100, email=email)
-        #    return
-        #self.set_secure_cookie('user', str(user['_id']), expires_days=30)
-        #self.redirect(self.get_argument('next', '/'))
+        user = User.get_by_email(email)
+        if not user:
+            self.render('login.html', error=100, email=email)
+
+        if user.get_password() == encrypt(password):
+            self.set_secure_cookie('uid', user.id, expires_days=7)
+            self.redirect(self.get_argument('next', '/'))
+        self.render('login.html', error=100, email=email)
 
 
 class LogoutHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.clear_cookie('user')
-        self.redirect(self.get_argument('next', '/'))
+        self.clear_cookie('uid')
+        self.redirect('/')
 
 
 class GoogleLoginHandler(BaseHandler, tornado.auth.GoogleMixin):

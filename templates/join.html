@@ -2,26 +2,26 @@
 
 {% block canvas %}
   <h1 id="login_logo"><a href="/">Join Diggit</a></h1>
-  <img alt="Horizontal Rule" src="{{ static_url("images/login_bar.png") }}" class="login_bar"/>
+  <img alt="Horizontal Rule" src="{{ static_url("img/login_bar.png") }}" class="login_bar"/>
   {% if error %}
     <p style="text-align: center;" class="error">
       {{ handler.error_message[str(error)] }}
     </p>
   {% end %}
-  <form accept-charset="utf-8" method="POST" action="/join" class="Form FancyForm AuthForm">
+  <form accept-charset="utf-8" method="POST" action="/join/" class="Form FancyForm AuthForm">
     <ul>
-	  <li>
-        <input type="text" name="name" id="id_name" value="{{ name }}">
+      <li>
+        <input type="text" name="name" value="{{ name }}">
         <label>Name</label>
         <span class="fff"></span>
       </li>
       <li>
-        <input type="text" name="email" id="id_email" value="{{ email }}">
+        <input type="text" name="email" value="{{ email }}">
         <label>Email</label>
         <span class="fff"></span>
       </li>
       <li>
-        <input type="password" name="password" id="id_password">
+        <input type="password" name="password">
         <label>Password</label>
         <span class="fff"></span>
       </li>
@@ -31,7 +31,6 @@
       <a onclick="$('.AuthForm').submit(); return false" class="Button WhiteButton Button13" href="#">
         <strong>Join</strong><span></span>
       </a>
-      <!--<a href="#" class="colorless" id="backToLogin">Back to login</a>-->
     </div>
   </form>
 {% end %}

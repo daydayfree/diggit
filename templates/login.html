@@ -2,11 +2,11 @@
 
 {% block canvas %}
   <h1 id="login_logo"><a href="/">Login Diggit</a></h1>
-  <img alt="Horizontal Rule" src="{{ static_url("images/login_bar.png") }}" class="login_bar"/>
+  <img alt="Horizontal Rule" src="{{ static_url("img/login_bar.png") }}" class="login_bar"/>
   {% if error %}
     <p style="text-align: center;" class="error">Error</p>
   {% end %}
-  <form accept-charset="utf-8" method="POST" action="/login" class="Form FancyForm AuthForm">
+  <form accept-charset="utf-8" method="POST" action="/login/" class="Form FancyForm AuthForm">
     <ul>
       <li>
         <input type="text" name="email" id="id_email" value="{{ email }}">
@@ -18,7 +18,7 @@
         <label>Password</label>
         <span class="fff"></span>
       </li>
-	  {{ xsrf_form_html() }}
+      {{ xsrf_form_html() }}
     </ul>
     <div class="non_inputs">
       <a onclick="$('.AuthForm').submit(); return false" class="Button WhiteButton Button13" href="#">
