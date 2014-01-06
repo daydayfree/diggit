@@ -36,7 +36,7 @@ class Photo(object):
 
     def url(self, category='photo'):
         # TODO
-        return 'http://img5.douban.com/view/photo/photo/public/p2164203249.jpg'
+        return 'http://img3.douban.com/icon/ul65647191-17.jpg'
 
     def liked(self, user_id):
         # TODO
@@ -60,9 +60,9 @@ class Photo(object):
             photo = cls.get(id)
             if not photo:
                 return None
-            r = crop_photo(photo.filename, content)
-            if r:
-                width, height = r
+            crop_photo_size = crop_photo(photo.filename, content)
+            if crop_photo_size:
+                width, height = crop_photo_size
                 cls.update(id, width=width, height=height)
             return cls.get(id)
         return None
@@ -132,13 +132,13 @@ class Photo(object):
 
     @classmethod
     def update(cls, id, text=None, width=None, height=None):
-        update = {}
+        photo_data = {}
         if text:
-            update['text'] = text
+            photo_data['text'] = text
         if width and height:
-            update.update({'width': width, 'height': height})
+            photo_data.update({'width': width, 'height': height})
         query = {'_id': ObjectId(id)}
-        get_cursor(cls.table).update(query, {'$set': update}, safe=True)
+        get_cursor(cls.table).update(query, {'$set': photo_data}, safe=True)
 
     def inc_like_count(self, inc=1):
         query = {'_id': ObjectId(self.id)}
