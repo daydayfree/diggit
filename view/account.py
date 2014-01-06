@@ -119,11 +119,11 @@ class CropIconHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         if "file_path" not in self.request.arguments:
-            self.redirect("/settings/icon")
+            self.redirect("/settings/icon/")
             return
         file_path = self.get_argument("file_path", "")
         if file_path == "":
-            self.redirect("/settings/icon")
+            self.redirect("/settings/icon/")
             return
         file_path = file_path.split("/icons_tmp/")[1]
         self.render("account/crop.html", error=None, file_path=file_path)
@@ -148,4 +148,4 @@ class CropIconHandler(BaseHandler):
         if result:
             self.render("account/crop.html", error=152, file_path=file_path)
             return
-        self.redirect("/settings/icon")
+        self.redirect("/settings/icon/")
