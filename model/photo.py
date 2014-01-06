@@ -132,13 +132,13 @@ class Photo(object):
 
     @classmethod
     def update(cls, id, text=None, width=None, height=None):
-        photo_data = {}
+        update = {}
         if text:
-            photo_data['text'] = text
+            update['text'] = text
         if width and height:
-            photo_data.update({'width': width, 'height': height})
+            update.update({'width': width, 'height': height})
         query = {'_id': ObjectId(id)}
-        get_cursor(cls.table).update(query, {'$set': photo_data}, safe=True)
+        get_cursor(cls.table).update(query, {'$set': update}, safe=True)
 
     def inc_like_count(self, inc=1):
         query = {'_id': ObjectId(self.id)}
