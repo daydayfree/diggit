@@ -4,7 +4,7 @@ from utils.pager import Pager
 from model.user import User
 from model.photo import Photo
 
-from base import BaseHandler
+from view import BaseHandler
 
 
 class IndexHandler(BaseHandler):

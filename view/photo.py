@@ -2,7 +2,7 @@
 
 import tornado.web
 
-from base import BaseHandler
+from view import BaseHandler
 from model.photo import Photo
 
 

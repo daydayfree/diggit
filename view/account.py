@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import os.path
+import os
 import time
 import tornado.web
-from base import BaseHandler
+
 from model.user import User
 from utils import encrypt
 from utils.image import crop_icon
-from utils import Log
+from view import BaseHandler
 
 
 class SettingsHandler(BaseHandler):
@@ -19,7 +19,6 @@ class SettingsHandler(BaseHandler):
     @tornado.web.authenticated
     def post(self):
         user = self.current_user
-        Log.info(user)
         new_name = self.get_argument("name", user.name)
         new_city = self.get_argument("city", "")
         new_blog = self.get_argument("blog", "")
@@ -102,7 +101,6 @@ class IconHandler(BaseHandler):
             writer.flush()
             writer.close()
         except Exception, ex:
-            Log.error(ex)
             self.render("account/icon.html", error=153)
             return
         file_dir = file_dir.split("/icons_tmp/")[1]

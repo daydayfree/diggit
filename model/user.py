@@ -40,6 +40,43 @@ class User(object):
     def followed_count(self):
         pass
 
+    @property
+    def avatar_url(self, category='thumb'):
+        # TODO
+        return 'http://img3.douban.com/icon/ul65647191-17.jpg'
+
+    def update_password(self, password):
+        query = {'user_id': self.id}
+        update = {
+            'user_id': self.id,
+            'password': password,
+            'update_time': datetime.now()
+        }
+        get_cursor('user_password').update(query, update, upsert=True)
+
+    def get_password(self):
+        query = {'user_id': self.id}
+        r = get_cursor('user_password').find_one(query)
+        return r and r.get('password')
+
+    def update(self, name='', city='', blog='', intro='', uid=''):
+        query = {'_id': ObjectId(self.id)}
+        update = {}
+        if name:
+            update['name'] = name
+        if city:
+            update['city'] = city
+        if blog:
+            update['blog'] = blog
+        if intro:
+            update['intro'] = intro
+        if uid:
+            update['uid'] = uid
+        if update:
+            update['update_time'] = datetime.now()
+            get_cursor(self.table).update(query, {'$set': update}, safe=True)
+        return User.get(self.id)
+
     @classmethod
     def new(cls, name, email, city='', blog='', intro='', uid=''):
         current_time = datetime.now()
@@ -57,20 +94,6 @@ class User(object):
         if id:
             return cls.get(id)
         return None
-
-    def update_password(self, password):
-        query = {'user_id': self.id}
-        update = {
-            'user_id': self.id,
-            'password': password,
-            'update_time': datetime.now()
-        }
-        get_cursor('user_password').update(query, update, upsert=True)
-
-    def get_password(self):
-        query = {'user_id': self.id}
-        r = get_cursor('user_password').find_one(query)
-        return r and r.get('password')
 
     @classmethod
     def initialize(cls, item):
@@ -107,24 +130,6 @@ class User(object):
         item = get_cursor(cls.table).find_one(query)
         return item and cls.initialize(item)
 
-    def update(self, name='', city='', blog='', intro='', uid=''):
-        query = {'_id': ObjectId(self.id)}
-        update = {}
-        if name:
-            update['name'] = name
-        if city:
-            update['city'] = city
-        if blog:
-            update['blog'] = blog
-        if intro:
-            update['intro'] = intro
-        if uid:
-            update['uid'] = uid
-        if update:
-            update['update_time'] = datetime.now()
-            get_cursor(self.table).update(query, {'$set': update}, safe=True)
-        return User.get(self.id)
-
     @classmethod
     def gets(cls, start=0, limit=10):
         rs = get_cursor(cls.table).find('update_time', -1).sort()\
@@ -135,7 +140,3 @@ class User(object):
     def get_count(cls):
         return get_cursor(cls.table).count()
 
-    @property
-    def avatar_url(self, category='thumb'):
-        # TODO
-        return 'http://img3.douban.com/icon/ul65647191-17.jpg'

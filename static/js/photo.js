@@ -4,6 +4,7 @@ $(document).ready(function() {
         file_post_name : "file",
         flash_url : $("#upload-swf-url").val(),
         upload_url: $(".form-upload").attr("action"),
+        post_params: {_xsrf: getCookie("_xsrf"), text: $("#text").val(), tags: $("#tags").val()},
         file_size_limit : "10 MB",
         file_types : "*.jpg;*.png;*.jpeg;",
         file_types_description : "Image Files",

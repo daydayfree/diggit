@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import tornado.web
-from base import BaseHandler
+from view import BaseHandler
 
 
 class AboutHandler(BaseHandler):

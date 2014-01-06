@@ -17,6 +17,7 @@
   <div id="login_logo"></div>
   <input type="hidden" id="upload-swf-url" value="{{static_url('upload.swf')}}"/>
   <form action="/upload/" method="post" enctype="multipart/form-data" class="Form StaticForm form-upload" id="profileEdit">
+    {{xsrf_form_html()}}
     <h3>上传图片</h3>
     <ul>
       <li>
