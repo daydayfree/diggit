@@ -63,9 +63,9 @@ class Photo(object):
             photo = cls.get(id)
             if not photo:
                 return None
-            r = crop_photo(photo.filename, content)
-            if r:
-                width, height = r
+            crop_photo_size = crop_photo(photo.filename, content)
+            if crop_photo_size:
+                width, height = crop_photo_size
                 cls.update(id, width=width, height=height)
             return cls.get(id)
         return None
