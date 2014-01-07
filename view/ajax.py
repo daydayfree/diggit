@@ -9,104 +9,11 @@ from model import Relation
 from model import Fav
 from model import Entry
 from model import Comment
-from model import SearchEngine
-from base import BaseHandler
+from view import BaseHandler
 
 
 PAGE_SIZE = 20
 MAX_PAGE_SIZE = 100
-
-
-class AjaxHandler(BaseHandler):
-
-    @property
-    def entry_dal(self): return Entry()
-
-    @property
-    def fav_dal(self): return Fav()
-
-    @property
-    def comment_dal(self): return Comment()
-
-    @property
-    def searchEngine(self): return SearchEngine()
-
-    def post(self):
-        result = {"code": 200, "msg": "OK", "end": 0, "html": ""}
-
-        offset = int(self.get_argument("offset", "0"))
-        p = int(self.get_argument("p", "1"))
-        user_id = self.get_argument("user_id", None)
-        filter = self.get_argument("filter", "-1")
-        category = self.get_argument("category", None)
-        q = self.get_argument("q", None)
-
-        p = 1 if p < 1 else p
-        if filter == "likes":
-            if not user_id:
-                result["code"] = 404
-                self.render("ajax/pubu.json", result=result)
-                return
-            total = self.fav_dal.get_user_like_entries_count(int(user_id))
-        elif user_id:
-            total = self.entry_dal.get_user_entries_count(int(user_id))
-        elif category:
-            total = self.entry_dal.get_entries_count_by_category(int(category))
-        elif q:
-            total = self.searchEngine.search_entries_count(q)
-        else:
-            total = self.entry_dal.get_count(None)
-
-        if total <= 0:
-            result["code"] = 404
-            self.render("ajax/pubu.json", result=result)
-            return
-
-        tmp = offset
-        offset = (p - 1) * MAX_PAGE_SIZE + offset
-        limit = PAGE_SIZE
-
-        if filter == "likes":
-            entries = self.fav_dal.get_user_like_entries(
-                int(user_id), offset, limit)
-        elif user_id:
-            entries = self.entry_dal.get_user_entries(
-                int(user_id), offset, limit)
-        elif category:
-            entries = self.entry_dal.get_entries_by_category(int(category), offset, limit)
-        elif q:
-            entries = self.searchEngine.search_entries(q, offset, limit)
-        else:
-            entries = self.entry_dal.query(None, offset, limit)
-
-        """Get entry's comments"""
-        tweet_ids = [t["_id"] for t in entries]
-        comments = self.comment_dal.get_comments_by_ids(tweet_ids)
-        for tweet in entries:
-            tweet["comment_list"] = []
-            for comment in comments:
-                if tweet["_id"] == comment["entry_id"]:
-                    tweet["comment_list"].append(comment)
-
-        """Validate the current user is like this entry"""
-        if self.current_user:
-            fids = self.fav_dal.get_user_isliked(
-                self.current_user["_id"], tweet_ids)
-            for tweet in entries:
-                tweet["iliked"] = True if tweet["_id"] in fids else False
-
-        tmp = tmp + len(entries)
-        htmls = []
-        for entry in entries:
-            html = self.render_string("modules/entry.html", entry=entry)
-            htmls.append(util.json_encode(html))
-        result["html"] = htmls
-
-        pager = tmp % MAX_PAGE_SIZE == 0
-        final = (offset + len(entries)) >= total
-        if pager: result["end"] = 1
-        if final: result["end"] = 2
-        self.render("ajax/pubu.json", result=result)
 
 
 class AjaxRelationHandler(BaseHandler):

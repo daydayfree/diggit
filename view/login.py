@@ -7,7 +7,7 @@ import tornado.auth
 from utils import encrypt
 from utils.auth import WeiboMixin, QQMixin
 from model.user import User
-from base import BaseHandler
+from view import BaseHandler
 
 
 class JoinHandler(BaseHandler):

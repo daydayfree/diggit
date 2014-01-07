@@ -29,13 +29,15 @@ class FileStore(object):
     def load(self, filename, category=None):
         path = self.filepath(filename, category)
         if os.path.exists(path):
-            return open(path, 'rb').read()
+            with open(path, 'rb') as f:
+                return f.read()
 
     def save(self, filename, content, category=None):
         path = self.filepath(filename, category)
         if not os.path.exists(os.path.dirname(path)):
             os.makedirs(os.path.dirname(path))
-        open(path, 'wb').write(content)
+        with open(path, 'wb') as f:
+            f.write(content)
         return path
 
     def delete(self, filename, category=None):

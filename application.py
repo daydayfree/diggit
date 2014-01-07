@@ -2,18 +2,8 @@
 
 import os
 import tornado.web
-
+from tornado.web import url
 from tornado.options import define, options
-
-define('port', default=9800, help='run on the given port', type=int)
-define('upload_url', '/upload/')
-
-define('weibo_consumer_key', default='')
-define('weibo_consumer_secret', default='')
-define('qq_consumer_key', default='')
-define('qq_consumer_secret', default='')
-define('renren_key', default='')
-define('renren_secret', default='')
 
 from module import (
     AccountModule, NoticeModule, EntryModule, UserBoardModule,
@@ -30,6 +20,16 @@ from view.account import (
 )
 from view.photo import UploadHandler
 from view.j.photo import IndexPhotoHandler
+from view import ImageRenderHandler
+
+
+define('port', default=9800, help='run on the given port', type=int)
+define('weibo_consumer_key', default='')
+define('weibo_consumer_secret', default='')
+define('qq_consumer_key', default='')
+define('qq_consumer_secret', default='')
+define('renren_key', default='')
+define('renren_secret', default='')
 
 
 class Application(tornado.web.Application):
@@ -49,7 +49,7 @@ class Application(tornado.web.Application):
             #(r'/open/renren', RenrenLoginHandler),
             #(r'/logout', LogoutHandler),
             (r'/upload/', UploadHandler),
-            #(r'/upload_private', PrivateUploadHandler),
+            url(r'/image/(?P<category>\w+)/(?P<filename>\w+\.jpg)', ImageRenderHandler, name='image_render'),
             #(r'/user/(\d+)', UserHandler),
             #(r'/user/(\d+)/do_follow', FollowHandler),
             #(r'/item/(\d+)', ItemHandler),
@@ -88,18 +88,14 @@ class Application(tornado.web.Application):
             'CategoriesBar': CategoriesBarModule,
         }
         settings = dict(
-            template_path=os.path.join(
-                os.path.dirname(__file__), 'templates'),
+            template_path=os.path.join(os.path.dirname(__file__), 'templates'),
             static_path=os.path.join(os.path.dirname(__file__), 'static'),
-            xsrf_cookies=False,
+            xsrf_cookies=True,
             cookie_secret='11oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=',
             diggit_title='Diggit',
             login_url='/login',
             autoescape=None,
             ui_modules=ui_modules,
-            upload_url=options.upload_url,
-            icon_dir=os.path.join(
-                os.path.dirname(__file__), 'static/icons_tmp'),
             weibo_consumer_key=options.weibo_consumer_key,
             weibo_consumer_secret=options.weibo_consumer_secret,
             qq_consumer_key=options.qq_consumer_key,
@@ -108,3 +104,6 @@ class Application(tornado.web.Application):
             renren_secret=options.renren_secret,
         )
         tornado.web.Application.__init__(self, handlers, **settings)
+
+
+application = Application()

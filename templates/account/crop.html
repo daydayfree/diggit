@@ -63,18 +63,18 @@
 <form action="/settings/crop/" enctype="multipart/form-data" method="post" class="Form StaticForm" id="profileEdit">
   <h3>裁剪头像</h3>
   <ul>
-	<li>
-	  <label for="thumbnail">缩略图</label>
-	  <div class="Right">
-		<div id="thumbnail"><img id="preview" alt="缩略图" src="{{ static_url("icons_tmp/%s" % file_path) }}"/></div>
-	  </div>
-	</li>
-	<li>
-	  <label for="target">裁剪图片</label>
-	  <div class="Right">
-		<img id="target" alt="裁剪图片" src="{{ static_url("icons_tmp/%s" % file_path) }}"/>
-	  </div>
-	</li>
+    <li>
+      <label for="thumbnail">缩略图</label>
+      <div class="Right">
+        <div id="thumbnail"><img id="preview" alt="缩略图" src="{{ static_url("icons_tmp/%s" % file_path) }}"/></div>
+      </div>
+    </li>
+    <li>
+      <label for="target">裁剪图片</label>
+      <div class="Right">
+        <img id="target" alt="裁剪图片" src="{{ static_url("icons_tmp/%s" % file_path) }}"/>
+      </div>
+    </li>
   </ul>
   <div class="Submit">
     <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#"><strong>裁剪</strong><span></span></a>

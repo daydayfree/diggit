@@ -6,6 +6,7 @@ from bson import ObjectId
 from corelib.store import get_cursor
 from utils.image import crop_photo
 from model.user import User
+from view import photo_url
 
 
 class Photo(object):
@@ -26,6 +27,9 @@ class Photo(object):
         self.like_count = like_count
         self.comment_count = comment_count
 
+    def __repr__(self):
+        return '<Photo:id=%s>' % self.id
+
     @property
     def author(self):
         return self.author_id and User.get(self.author_id)
@@ -35,8 +39,7 @@ class Photo(object):
         return 'p%s.jpg' % self.id
 
     def url(self, category='photo'):
-        # TODO
-        return 'http://img3.douban.com/icon/ul65647191-17.jpg'
+        return photo_url(category, self.filename)
 
     def liked(self, user_id):
         # TODO

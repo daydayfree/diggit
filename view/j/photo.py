@@ -3,14 +3,14 @@
 import json
 
 from model.photo import Photo
-from view.base import BaseHandler
+from view import BaseHandler
 
 
 class IndexPhotoHandler(BaseHandler):
 
     def post(self):
         start = self.get_argument('start', 0)
-        photos = Photo.gets(start, 20)
+        photos = Photo.gets(0, 20)
 
         # TODO
         # liked by current user
