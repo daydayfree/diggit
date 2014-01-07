@@ -31,7 +31,7 @@
       </div>
     </div>
     <a class="PinImage ImgLink" href="/item/{{ photo.id }}">
-      <img class="PinImageImg" style="height: {{ photo.height*192/photo.width }}px;" alt="cat art" src="{{ photo.url() }}"/>
+      <img class="PinImageImg" style="height:{{photo.height*192/photo.width}}px;" alt="cat art" src="{{ photo.url() }}"/>
     </a>
   </div>
   <p class="description">{{ photo.text }}</p>
