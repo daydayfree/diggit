@@ -5,14 +5,12 @@ var loading = false;
 var finished = false;
 var idPrefix = "#" + colNamePrefix;
 
-
 $(document).ready(function() {
     loader();
     $(window).scroll(function() {
         start_loader()
     });
 });
-
 
 var loadTrigger = function() {
     if (($(window).height() + $(window).scrollTop()) >= $("body").height()) {
@@ -21,22 +19,28 @@ var loadTrigger = function() {
     return false;
 }
 
-
 var start_loader = function() {
-    if (finished || loading) return;
+    if (finished || loading) {
+        return;
+    }
     var trigger = loadTrigger();
     if (trigger) {
-        loader(userId, filter);
+        loader();
     }
 }
 
 
 var loader = function(){
-    loading = true;
-    $("#LoadingPins").fadeIn();
-
     var page = parseInt($(".current_page").val());
     var start = $("#ColumnContainer .pin").length;
+
+    if (start >= 50) {
+        finished = true
+        return;
+    }
+
+    loading = true;
+    $("#LoadingPins").fadeIn();
 
     $.post("/j/photos/", {page:page, start:start}, function(r) {
         if (r.code === 200) {
@@ -48,9 +52,9 @@ var loader = function(){
                 $("#pager").css("display", "block");
                  finished = true;
             }
+            $("abbr.timeago").timeago();
         }
+        loading = false;
+        $("#LoadingPins").fadeOut();
     });
-
-    loading = false;
-    $("#LoadingPins").css("display", "none");
 }

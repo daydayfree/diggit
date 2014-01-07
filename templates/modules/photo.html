@@ -31,7 +31,7 @@
       </div>
     </div>
     <a class="PinImage ImgLink" href="/item/{{ photo.id }}">
-      <img class="PinImageImg" style="height: {{ photo.height*192/photo.width }}px;" alt="cat art" src="{{ photo.url() }}"/>
+      <img class="PinImageImg" style="height:{{photo.height*192/photo.width}}px;" alt="cat art" src="{{ photo.url() }}"/>
     </a>
   </div>
   <p class="description">{{ photo.text }}</p>
@@ -47,7 +47,7 @@
       <a title="{{ photo.author.name }}" href="/user/{{ photo.author_id }}/">
         {{ photo.author.name }}
       </a>
-      {{ photo.create_time }} uploaded.
+      <abbr class="timeago" title="{{photo.create_time}}">{{photo.create_time}}</abbr>
     </p>
   </div>
   <div class="comments colormuted" id="comments{{ photo.id }}">
