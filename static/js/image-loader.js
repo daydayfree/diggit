@@ -48,6 +48,7 @@ var loader = function(){
                 $("#pager").css("display", "block");
                  finished = true;
             }
+            $("abbr.timeago").timeago();
         }
     });
 

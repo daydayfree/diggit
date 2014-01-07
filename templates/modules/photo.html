@@ -47,7 +47,7 @@
       <a title="{{ photo.author.name }}" href="/user/{{ photo.author_id }}/">
         {{ photo.author.name }}
       </a>
-      {{ photo.create_time }} uploaded.
+      <abbr class="timeago" title="{{photo.create_time}}">{{photo.create_time}}</abbr>
     </p>
   </div>
   <div class="comments colormuted" id="comments{{ photo.id }}">
