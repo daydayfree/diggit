@@ -7,11 +7,12 @@
 {% end %}
 <form action="/settings/icon/" enctype="multipart/form-data" method="post" class="Form StaticForm" id="profileEdit">
   <h3>修改头像</h3>
+  {{xsrf_form_html()}}
   <ul>
     <li>
       <label>当前头像</label>
       <div class="Right">
-        <img alt="你的头像" src="http://img3.douban.com/icon/ul65647191-17.jpg"/>
+        <img alt="你的头像" src="{{current_user.avatar_url()}}"/>
       </div>
     </li>
     <li>
@@ -20,10 +21,11 @@
         <input type="file" id="icon" name="icon" size="30"/>
       </div>
     </li>
-    {{ xsrf_form_html() }}
   </ul>
   <div class="Submit">
-    <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#"><strong>更新</strong><span></span></a>
+    <a onclick="$('.StaticForm').submit(); return false" class="Button WhiteButton Button13" href="#">
+      <strong>更新</strong><span></span>
+    </a>
   </div>
 </form>
 {% end %}

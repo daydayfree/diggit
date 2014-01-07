@@ -2,7 +2,9 @@
 
 from datetime import datetime
 from bson import ObjectId
+
 from corelib.store import get_cursor
+from corelib.filestore import fs
 
 
 class User(object):
@@ -41,9 +43,25 @@ class User(object):
         pass
 
     @property
+    def avatar_filename(self):
+        return 'u%s.jpg' % self.id
+
+    def has_avatar(self):
+        return fs.exists(self.avatar_filename, 'thumb')
+
+    def has_origin_avatar(self):
+        return fs.exists(self.avatar_filename, 'origin')
+
     def avatar_url(self, category='thumb'):
-        # TODO
-        return 'http://img3.douban.com/icon/ul65647191-17.jpg'
+        if not self.has_avatar():
+            return 'http://img3.douban.com/icon/ul65647191-17.jpg'
+        from view import photo_url
+        return photo_url(category, self.avatar_filename)
+
+    @property
+    def origin_avatar_url(self):
+        from view import photo_url
+        return photo_url('origin', self.avatar_filename)
 
     def update_password(self, password):
         query = {'user_id': self.id}

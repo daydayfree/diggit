@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 
-import os
-import time
-import tornado.web
+from tornado.web import authenticated
+
+from utils import encrypt
+from utils.image import crop_icon, save_origin_icon
 
 from model.user import User
-from utils import encrypt
-from utils.image import crop_icon
 from view import BaseHandler
 
 
 class SettingsHandler(BaseHandler):
 
-    @tornado.web.authenticated
+    @authenticated
     def get(self):
         self.render("account/settings.html", error=None)
 
-    @tornado.web.authenticated
+    @authenticated
     def post(self):
         user = self.current_user
         new_name = self.get_argument("name", user.name)
@@ -40,11 +39,11 @@ class PasswordHandler(BaseHandler):
         "143": "密码修改出错，请稍后再试。"
     }
 
-    @tornado.web.authenticated
+    @authenticated
     def get(self):
         self.render("account/pwd.html", error=None)
 
-    @tornado.web.authenticated
+    @authenticated
     def post(self):
         user = self.current_user
         password = self.get_argument("pwd", "")
@@ -71,40 +70,26 @@ class IconHandler(BaseHandler):
         "153": "头像修改出错，请稍后再试。"
     }
 
-    image_types = ["jpeg", "png", "gif"]
-
-    @tornado.web.authenticated
+    @authenticated
     def get(self):
         self.render("account/icon.html", error=None)
 
-    @tornado.web.authenticated
+    @authenticated
     def post(self):
         if not self.request.files:
             self.render("account/icon.html", error=151)
             return
-        files = self.request.files["icon"]
-        if len(files) == 0:
+        files = self.request.files.get('icon')
+        if not files:
             self.render("account/icon.html", error=151)
             return
-        image_type = files[0]["content_type"].split("/")[1]
-        if image_type not in self.image_types:
+        ext = files[0]["content_type"].split("/")[1]
+        if ext not in ('jpeg', 'png', 'gif', 'jpg'):
             self.render("account/icon.html", error=152)
             return
-        """TODO头像分片存储"""
-        ext = os.path.splitext(files[0]["filename"])[1]
-        filepath = "u_%s_%s%s" % (
-            self.current_user.id, str(int(time.time())), ext)
-        file_dir = "%s/%s" % (self.settings["icon_dir"], filepath)
-        try:
-            writer = open(file_dir, "wb")
-            writer.write(files[0]["body"])
-            writer.flush()
-            writer.close()
-        except Exception, ex:
-            self.render("account/icon.html", error=153)
-            return
-        file_dir = file_dir.split("/icons_tmp/")[1]
-        self.render("account/crop.html", error=None, file_path=file_dir)
+        content = files[0].body
+        save_origin_icon(self.current_user.avatar_filename, content)
+        self.render("account/crop.html", error=None)
 
 
 class CropIconHandler(BaseHandler):
@@ -114,36 +99,19 @@ class CropIconHandler(BaseHandler):
         "152": "头像设置出错，重新裁剪试试。"
     }
 
-    @tornado.web.authenticated
+    @authenticated
     def get(self):
-        if "file_path" not in self.request.arguments:
+        if not self.current_user.has_origin_avatar():
             self.redirect("/settings/icon/")
-            return
-        file_path = self.get_argument("file_path", "")
-        if file_path == "":
-            self.redirect("/settings/icon/")
-            return
-        file_path = file_path.split("/icons_tmp/")[1]
-        self.render("account/crop.html", error=None, file_path=file_path)
+        self.render("account/crop.html", error=None)
 
-
-    @tornado.web.authenticated
+    @authenticated
     def post(self):
+        if not self.current_user.has_origin_avatar():
+            self.redirect("/settings/icon/")
+
         coords = self.get_argument("coords")
-        file_path = self.get_argument("file_path")
-        tmp = "%s/%s" % (self.settings["icon_dir"], file_path)
-        response = crop_icon(self.current_user.id, tmp, coords)
-        if not response["status"]:
-            self.render("account/crop.html", error=152, file_path=file_path)
-            return
-        photo_path = response["photo_path"].split("/icon/")[1]
-        middle_path = response["middle_path"].split("/icon/")[1]
-        user = self.current_user
-        user.photo_url = photo_path
-        user.middle_photo_url = middle_path
-        # TODO:生成新的头像的 url ~
-        result = 0
-        if result:
-            self.render("account/crop.html", error=152, file_path=file_path)
-            return
+        if not crop_icon(self.current_user.avatar_filename, coords):
+            self.render("account/crop.html", error=152)
+
         self.redirect("/settings/icon/")
