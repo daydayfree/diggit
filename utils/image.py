@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from cStringIO import StringIO
 from PIL import Image
 
 from corelib.filestore import fs
@@ -49,13 +50,26 @@ def crop_photo(filename, content):
     return middle_width, middle_height
 
 
-def crop_icon(filename, content, coords):
-    coords = coords.split(',')
+def save_origin_icon(filename, content):
+    image = Image.open(StringIO(content))
+    width, height = image.size
+    if width > 500:
+        width = 500
+        height = int(height * 500 / float(width))
+    if height < 100:
+        return False
+    i = image.resize((width, height), Image.ANTIALIAS)
+    p = fs.filepath(filename, 'origin')
+    i.save(p, quality=150)
+
+
+def crop_icon(filename, coords):
+    coords = coords.split(' ')
     if len(coords) != 4:
         return False
     left, top, width, height = map(int, coords)
 
-    source_path = fs.save(filename, 'origin')
+    source_path = fs.filepath(filename, 'origin')
 
     image = Image.open(source_path)
     box = (left, top, left+width, top+height)

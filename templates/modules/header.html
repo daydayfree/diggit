@@ -15,7 +15,7 @@
 	  </li>
       <li id="UserNav">
         <a class="nav" href="/user/{{current_user.id}}/">
-		  <img alt="{{current_user.name}}" src="{{current_user.avatar_url}}"/>{{current_user.name}}<span></span>
+		  <img alt="{{current_user.name}}" src="{{current_user.avatar_url()}}"/>{{current_user.name}}<span></span>
 		</a>
         <ul>
           <li><a href="/user/{{ current_user.id }}/">Home</a></li>
