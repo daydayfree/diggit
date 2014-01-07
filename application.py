@@ -96,6 +96,7 @@ class Application(tornado.web.Application):
             login_url='/login',
             autoescape=None,
             ui_modules=ui_modules,
+            icon_dir=os.path.join(os.path.dirname(__file__), 'static/icons_tmp'),
             weibo_consumer_key=options.weibo_consumer_key,
             weibo_consumer_secret=options.weibo_consumer_secret,
             qq_consumer_key=options.qq_consumer_key,
