@@ -31,13 +31,8 @@ var start_loader = function() {
 
 
 var loader = function(){
-    var page = parseInt($(".current_page").val());
+    var page = parseInt($(".pagination.page").val());
     var start = $("#ColumnContainer .pin").length;
-
-    if (start >= 50) {
-        finished = true
-        return;
-    }
 
     loading = true;
     $("#LoadingPins").fadeIn();
@@ -48,11 +43,10 @@ var loader = function(){
                 var index = getMinColumn();
                 $(r.photos[i]).appendTo($(idPrefix + index));
             }
-            if (r.end === true) {
-                $("#pager").css("display", "block");
-                 finished = true;
-            }
             $("abbr.timeago").timeago();
+        } else {
+            finished = true;
+            $("#pager").fadeIn();
         }
         loading = false;
         $("#LoadingPins").fadeOut();
