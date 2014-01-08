@@ -67,7 +67,8 @@ class IconHandler(BaseHandler):
         "150": "头像修改成功。",
         "151": "请选择头像。",
         "152": "图片格式不支持。",
-        "153": "头像修改出错，请稍后再试。"
+        "153": "头像修改出错，请稍后再试。",
+        "154": "图片尺寸不符合要求，请重新上传。"
     }
 
     @authenticated
@@ -88,7 +89,10 @@ class IconHandler(BaseHandler):
             self.render("account/icon.html", error=152)
             return
         content = files[0].body
-        save_origin_icon(self.current_user.avatar_filename, content)
+
+        result = save_origin_icon(self.current_user.avatar_filename, content)
+        if result == False:
+            self.render("account/icon.html", error=154)
         self.render("account/crop.html", error=None)
 
 
