@@ -60,6 +60,8 @@ class User(object):
 
     @property
     def origin_avatar_url(self):
+        if not self.has_origin_avatar():
+            return 'http://img3.douban.com/icon/ul65647191-17.jpg'
         from view import photo_url
         return photo_url('origin', self.avatar_filename)
 
