@@ -2,15 +2,15 @@
 
 {% block body %}
   <body id="profile" class="extraScroll">
-	{{ modules.Header() }}
-	{{ modules.UserProfile(user, False) }}
-	{% block canvas %}
+    {{ modules.Header() }}
+    {{ modules.UserProfile(user, False) }}
+    {% block canvas %}
     {% end %}
-	<div class="clear"></div>
-	<div id="footer">
-	  <div class="HeaderContainer">
-		<p>&copy; 2012 daydayfree</p>
-	  </div>
-	</div>
+    <div class="clear"></div>
+    <div id="footer">
+      <div class="HeaderContainer">
+        <p>&copy; 2012 daydayfree</p>
+      </div>
+    </div>
   </body>
 {% end %}
