@@ -28,19 +28,23 @@ class User(object):
 
     @property
     def photo_count(self):
-        pass
+        # TODO
+        return 0
 
     @property
     def like_count(self):
-        pass
+        # TODO
+        return 0
 
     @property
     def following_count(self):
-        pass
+        # TODO
+        return 0
 
     @property
     def followed_count(self):
-        pass
+        # TODO
+        return 0
 
     @property
     def avatar_filename(self):
@@ -132,6 +136,10 @@ class User(object):
 
     @classmethod
     def get(cls, id):
+        return cls.get_by_uid(id) or cls.get_by_id(id)
+
+    @classmethod
+    def get_by_id(cls, id):
         query = {'_id': ObjectId(id)}
         item = get_cursor(cls.table).find_one(query)
         return item and cls.initialize(item)

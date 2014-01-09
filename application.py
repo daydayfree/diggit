@@ -21,6 +21,7 @@ from view.account import (
 from view.photo import UploadHandler
 from view.j.photo import IndexPhotoHandler
 from view import ImageRenderHandler
+from view.user import UserHandler
 
 
 define('port', default=9800, help='run on the given port', type=int)
@@ -50,7 +51,7 @@ class Application(tornado.web.Application):
             #(r'/logout', LogoutHandler),
             (r'/upload/', UploadHandler),
             url(r'/image/(?P<category>\w+)/(?P<filename>\w+\.jpg)', ImageRenderHandler, name='image_render'),
-            #(r'/user/(\d+)', UserHandler),
+            (r'/user/(\w+)/', UserHandler),
             #(r'/user/(\d+)/do_follow', FollowHandler),
             #(r'/item/(\d+)', ItemHandler),
             #(r'/item/(\d+)/do_fav', FavHandler),

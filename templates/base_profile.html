@@ -3,8 +3,9 @@
 {% block body %}
   <body id="profile" class="extraScroll">
 	{{ modules.Header() }}
-	{{ modules.UserProfile(user, followed) }}
-	{% block canvas %}{% end %}
+	{{ modules.UserProfile(user, False) }}
+	{% block canvas %}
+    {% end %}
 	<div class="clear"></div>
 	<div id="footer">
 	  <div class="HeaderContainer">
