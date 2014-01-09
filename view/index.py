@@ -11,10 +11,8 @@ class IndexHandler(BaseHandler):
 
     def get(self):
         page = self.get_argument('p', '1')
-        if not (page and page.isdigit()):
-            page = 1
-        else:
-            page = int(page)
+
+        page = int(page) if page.isdigit() else 1
         self.render("index.html", p=page)
 
 

@@ -117,6 +117,10 @@ class Photo(object):
         return filter(None, [cls.initialize(r) for r in rs])
 
     @classmethod
+    def get_count(cls):
+        return get_cursor(cls.table).count()
+
+    @classmethod
     def get_count_by_user(cls, user_id):
         query = {'author_id': user_id}
         return get_cursor(cls.table).find(query).count()
