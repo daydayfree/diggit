@@ -1,67 +1,88 @@
 <div id="ProfileHeader">
   <div class="FixedContainer row clearfix">
-    <div class="info">
-      <a target="_blank" class="ProfileImage" href="{{ user.avatar_url('photo') }}">
-        <img alt="{{ user.name }}" src="{{ user.avatar_url('photo') }}">
-      </a>
+    <div class="user-board">
 
-      <div class="content">
-		<table cellspacing="0" width="100%">
-		  <tr>
-			<td><h1>{{user.name}}</h1></td>
-			<td align="right">
-			  {% if current_user and current_user.id != user.id %}
-			    {% if not followed %}
-			      <a class="Button13 Button WhiteButton" href="javascript:void(0)" onclick="do_follow({{ user.id }}, this)">
-				    <strong>Follow</strong><span></span>
-			      </a>
-			    {% else %}
-			      <a class="Button13 Button WhiteButton disabled" href="javascript:void(0)"
-				     onclick="do_follow({{user.id}}">
-				    <strong>Unfollow</strong><span></span>
-			      </a>
-			    {% end %}
-			  {% elif not current_user %}
-			    <a class="Button13 Button WhiteButton" href="{{ "/login/?next=%s" % url_escape(request.uri) }}">
-				  <strong>Follow</strong><span></span>
+      <!-- avatar -->
+      <div class="user-board-avatar">
+        <a target="_blank" class="ProfileImage" href="{{ user.avatar_url('photo') }}">
+          <img alt="{{ user.name }}" src="{{ user.avatar_url('photo') }}">
+        </a>
+      </div>
+
+      <div class="user-board-detail">
+        <!-- title -->
+        <div class="user-board-title">
+          <div class="user-board-name">
+            <h1>{{user.name}}</h1>
+          </div>
+          <div class="user-board-buttons">
+            {% if current_user and current_user.id != user.id %}
+		      {% if not followed %}
+		        <a class="Button13 Button WhiteButton" href="javascript:void(0)" onclick="do_follow({{ user.id }}, this)">
+			      <strong>Follow</strong><span></span>
+			    </a>
+			  {% else %}
+			    <a class="Button13 Button WhiteButton disabled" href="javascript:void(0)"
+				   onclick="do_follow({{user.id}}">
+				  <strong>Unfollow</strong><span></span>
 			    </a>
 			  {% end %}
-			</td>
-		  </tr>
-		</table>
-		{% if user.intro %}
-		  <p class="colormuted">{{ user.intro }}</p>
-		{% end %}
-      </div>
-	  <div id="ProfileLinks">
-		<table cellspacing="0" width="100%">
-		  <tr>
-			<td>
-			  <ul class="icons">
-				<li>
-				  <a target="_blank" class="icon website" href="{{ user.blog }}"></a>
-				</li>
-				<li id="ProfileLocation">
-				  <span class="icon location"></span>{{ user.city }}
-				</li>
-			  </ul>
-			</td>
-			<td align="right" id="profileStatus">
-			  <a href="/user/{{user.id}}/" class="selected">
-                <strong>{{ user.photo_count }}</strong> images
-              </a>
-			  <a href="/user/{{user.id}}/like/">
-                <strong>{{ user.like_count }}</strong> likes
-              </a>
-			  <a href="/user/{{ user.id }}/follower/">
-                <strong>{{ user.followed_count }}</strong> followers
-              </a>
-			  <a href="/user/{{user.id}}/following/">
-                <strong>{{ user.following_count }}</strong> followings
-              </a>
-			</td>
-		  </tr>
-		</table>
+	        {% elif not current_user %}
+			  <a class="Button13 Button WhiteButton" href="{{ "/login/?next=%s" % url_escape(request.uri) }}">
+			    <strong>Follow</strong><span></span>
+			  </a>
+	        {% end %}
+          </div>
+        </div>
+
+        <!-- intro -->
+        <div class="user-board-intro">
+          {% if user.intro %}
+		    <p class="colormuted">{{ user.intro }}</p>
+		  {% end %}
+        </div>
+
+        <div class="user-board-bottom">
+          <!-- profile -->
+          <div class="user-board-profile">
+            <ul class="icons">
+		      <li>
+			    <a target="_blank" class="icon website" href="{{ user.blog }}"></a>
+		      </li>
+		      <li id="ProfileLocation">
+			    <span class="icon location"></span>{{ user.city }}
+		      </li>
+		    </ul>
+          </div>
+
+          <!-- status -->
+          <div class="user-board-status">
+            <ul>
+              <li>
+                <a href="/user/{{user.id}}/" class="selected">
+                  <strong>{{ user.photo_count }}</strong> images
+                </a>
+              </li>
+              <li>
+			    <a href="/user/{{user.id}}/like/">
+                  <strong>{{ user.like_count }}</strong> likes
+                </a>
+              </li>
+              <li>
+			    <a href="/user/{{ user.id }}/follower/">
+                  <strong>{{ user.followed_count }}</strong> followers
+                </a>
+              </li>
+              <li>
+			    <a href="/user/{{user.id}}/following/">
+                  <strong>{{ user.following_count }}</strong> followings
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- status end -->
+        </div>
+        <!-- bottom end -->
       </div>
     </div>
   </div>

@@ -1,0 +1,68 @@
+.user-board {
+  height: 166px;
+  width: 100%;
+}
+
+.user-board-avatar {
+  float: left;
+  width: 166px;
+}
+
+.user-board-avatar img {
+  height: 100%;
+}
+
+.user-board-detail {
+  float: clear;
+  margin-left: 166px;
+  padding: 0 15px;
+  max-height: 166px;
+}
+
+.user-board-title {
+
+}
+
+.user-board-title h1 {
+  color: #534f4f;
+  margin: 15px 0 10px 0;
+  font-size: 30px;
+}
+
+.user-board-intro {
+  min-height: 55px;
+}
+.user-board-intro p {
+  line-height: 18px;
+  margin: 0 0 .8em;
+}
+
+.user-board-buttons {
+
+}
+
+.user-board-bottom {
+
+}
+
+.user-board-profile {
+  float: left;
+  width: 300px;
+}
+
+.user-board-status {
+  float: right;
+}
+
+.user-board-status ul {
+  float: right;
+}
+
+.user-board-status ul li {
+  float: right;
+  padding: 4px 5px;
+}
+
+.user-board-status ul li a.selected {
+  color: #CB2027;
+}
