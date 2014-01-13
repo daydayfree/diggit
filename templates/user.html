@@ -1,14 +1,7 @@
 {% extends "base_profile.html" %}
 
 {% block head %}
-<script type="text/javascript">
-$(document).ready(function() {
-  fetchEntries('{{ user["_id"] }}', '{{ filter }}');
-  $(window).scroll(function() {
-    viewLoader('{{ user["_id"] }}', '{{ filter }}');
-  });
-});
-</script>
+  <link rel="stylesheet" href="{{static_url("css/user.css")}}" type="text/css"/>
 {% end %}
 
 {% block canvas %}
@@ -21,14 +14,14 @@ $(document).ready(function() {
     <div class="clear"></div>
   </div>
   <div id="LoadingPins">
-    <img alt="Pin Loader Image" src="{{ static_url("img/BouncingLoader.gif") }}"/>
+    <img alt="Pin Loader Image" src="{{static_url("img/BouncingLoader.gif")}}"/>
     <span>loading...</span>
   </div>
   <div id="pager" style="display: none;">
-    <a class='Button Button13 WhiteButton' href='{{ "/user/%s?p=%s" % (user["_id"], p+1) if filter != "likes" else "/user/%s?filter=%s&p=%s" % (user["_id"], filter, p+1) }}'>
-      <strong> More... </strong><span></span>
+    <a class="Button Button13 WhiteButton" href="/user/{{user.id}}/" % (user["_id"], p+1) if filter != "likes">
+      <strong>More</strong><span></span>
     </a>
   </div>
-  <input id="p" type="hidden" value="{{ p }}">
+  <input id="page" type="hidden" value="{{page}}">
 </div>
 {% end %}
