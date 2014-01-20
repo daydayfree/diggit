@@ -26,6 +26,9 @@ class User(object):
     def __repr__(self):
         return '<user:%s,name=%s>' % (self.id, self.name)
 
+    def __eq__(self, other):
+        return self.id == other.id
+
     @property
     def photo_count(self):
         # TODO
@@ -165,4 +168,3 @@ class User(object):
     @classmethod
     def get_count(cls):
         return get_cursor(cls.table).count()
-
