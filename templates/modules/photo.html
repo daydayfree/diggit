@@ -3,23 +3,23 @@
     <div class="actions">
       <div class="right">
         {% if current_user %}
-          <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="commentIt({{ photo.id }})">
+          <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="commentIt('{{ photo.id }}')">
             <strong><em></em>Reply</strong><span></span>
           </a>
         {% else %}
-          <a class="Button Button11 WhiteButton" href="{{ "/login/?next=%s" % url_escape(request.uri) }}">
+          <a class="Button Button11 WhiteButton" href="{{ '/login/?next=%s' % url_escape(request.uri) }}">
             <strong><em></em>Reply</strong><span></span>
           </a>
         {% end %}
       </div>
       <div class="left">
         {% if current_user %}
-          {% if True %} <!-- TODO -->
-            <a class="Button Button11 WhiteButton disabled" href="javascript:void(0)" onclick="do_fav({{ photo.id }}, this)">
-              <strong><em></em>Unlike</strong><span></span>
+          {% if False %} <!-- TODO -->
+            <a class="Button Button11 WhiteButton disabled" href="javascript:void(0)" onclick="do_fav('{{ photo.id }}', this)">
+                <strong><em></em>Unlike</strong><span></span>
             </a>
           {% else %}
-            <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="do_fav({{ photo.id }}, this)">
+            <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="do_fav('{{ photo.id }}', this)">
               <strong><em></em>Like</strong><span></span>
             </a>
           {% end %}
@@ -30,7 +30,7 @@
         {% end %}
       </div>
     </div>
-    <a class="PinImage ImgLink" href="/item/{{ photo.id }}">
+    <a class="PinImage ImgLink" href="/image/photo/{{ photo.id }}.jpg">
       <img class="PinImageImg" style="height:{{photo.height*192/photo.width}}px;" alt="cat art" src="{{ photo.url() }}"/>
     </a>
   </div>

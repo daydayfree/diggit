@@ -4,6 +4,7 @@ function do_fav(entry_id, obj) {
   $.ajax({
     type: "POST",
     url: "/item/" + entry_id + "/do_fav"
+
   }).done(function( msg ) {
     if (msg == "true") {
       $(obj).removeClass().addClass("Button Button13 WhiteButton disabled clickable unlike_pin");
