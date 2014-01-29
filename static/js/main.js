@@ -1,21 +1,4 @@
 
-/* ajax */
-function do_fav(entry_id, obj) {
-  $.ajax({
-    type: "POST",
-    url: "/item/" + entry_id + "/do_fav"
-
-  }).done(function( msg ) {
-    if (msg == "true") {
-      $(obj).removeClass().addClass("Button Button13 WhiteButton disabled clickable unlike_pin");
-      $(obj).html("<strong>取消喜欢</strong><span></span>");
-    }
-    if (msg == "false") {
-      $(obj).removeClass().addClass("Button Button13 WhiteButton like_pin");
-      $(obj).html("<strong><em></em>喜欢</strong><span></span>");
-    }
-  });
-}
 
 function do_follow(user_id, obj) {
   $.ajax({

@@ -22,7 +22,7 @@ from view.photo import UploadHandler
 from view.j.photo import IndexPhotoHandler
 from view import ImageRenderHandler
 from view.user import UserHandler
-from view.fav import FavHandler
+from view.j.fav import FavHandler
 
 
 define('port', default=9800, help='run on the given port', type=int)
@@ -55,7 +55,7 @@ class Application(tornado.web.Application):
             (r'/user/(\w+)/', UserHandler),
             #(r'/user/(\d+)/do_follow', FollowHandler),
             #(r'/item/(\d+)', ItemHandler),
-            (r'/item/(\w+)/do_fav', FavHandler),
+            (r'/j/do_fav', FavHandler),
             #(r'/comment', CommentHandler),
             #(r'/settings', SettingsHandler),
             #(r'/settings/pwd', PasswordHandler),
