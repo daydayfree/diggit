@@ -151,11 +151,13 @@ class Photo(object):
         query = {'_id': ObjectId(self.id)}
         update = {'$inc': {'like_count': inc}}
         get_cursor(self.table).update(query, update, safe=True)
+        self.like_count += inc
 
     def inc_comment_count(self, inc=1):
         query = {'_id': ObjectId(self.id)}
         update = {'$inc': {'comment_count': inc}}
         get_cursor(self.table).update(query, update, safe=True)
+        self.comment_count += inc
 
     def get_comments(self, start=0, limit=3):
         # TODO
