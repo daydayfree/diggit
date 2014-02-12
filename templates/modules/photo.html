@@ -15,11 +15,11 @@
       <div class="left">
         {% if current_user %}
           {% if False %} <!-- TODO -->
-            <a class="Button Button11 WhiteButton disabled" href="javascript:void(0)" onclick="do_fav('{{ photo.id }}', this)">
+            <a class="Button Button11 WhiteButton disabled" href="javascript:void(0)" onclick="like('{{ photo.id }}', this)">
                 <strong><em></em>Unlike</strong><span></span>
             </a>
           {% else %}
-            <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="do_fav('{{ photo.id }}', this)">
+            <a class="Button Button11 WhiteButton" href="javascript:void(0)" onclick="like('{{ photo.id }}', this)">
               <strong><em></em>Like</strong><span></span>
             </a>
           {% end %}
@@ -30,7 +30,7 @@
         {% end %}
       </div>
     </div>
-    <a class="PinImage ImgLink" href="/image/photo/{{ photo.id }}.jpg">
+    <a class="PinImage ImgLink" href="/image/{{photo.id}}/">
       <img class="PinImageImg" style="height:{{photo.height*192/photo.width}}px;" alt="cat art" src="{{ photo.url() }}"/>
     </a>
   </div>
