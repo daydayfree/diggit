@@ -25,7 +25,7 @@ from view.user import UserHandler
 from view.j.like import LikeHandler
 
 
-define('port', default=9800, help='run on the given port', type=int)
+define('port', help='run on the given port', type=int)
 define('weibo_consumer_key', default='')
 define('weibo_consumer_secret', default='')
 define('qq_consumer_key', default='')
