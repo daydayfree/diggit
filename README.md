@@ -9,7 +9,7 @@ Diggit
 ## 搭建开发环境
 
 1. Install virtualenv
-> pip install virtualenv  
+> pip install virtualenv 
 
 2. Clone code
 > git clone https://github.com/daydayfree/diggit.git  
@@ -27,7 +27,15 @@ Diggit
 > modify `local_settings.py`  
 
 6. Install requirements
-> make init-dev  
+> make init-dev 
+
+7. Config pip download source
+> edit ~/.pip/pip.conf
+  
+  ```bash
+  [global]
+  index-url = http://pypi.douban.com/simple
+  ```
 
 7. Enjoy :)
 

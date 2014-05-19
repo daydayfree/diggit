@@ -5,7 +5,7 @@ MONGODB_CONFIG = {
     'PORT': 27017,
 }
 
-PHOTO_PATH = '/var/upload/'
+PHOTO_PATH = '~/upload/'
 
 try:
     from local_settings import *
