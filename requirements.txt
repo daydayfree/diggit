@@ -1,4 +1,4 @@
-Pillow==2.3.0
+Pillow==9.0.1
 tornado==3.0.0
 pymongo==2.5.0
 pytest==2.3.5
